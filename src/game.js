@@ -3,12 +3,11 @@ import Scene from "./scene.js";
 import SpriteObject from "./sprite-object.js";
 import Keyboard from "./keyboard.js";
 
-let SpeedExplorer = 5;
-let margin = 0;
-let Nblob = 6;
-let checktreasure = false;
-
 const TextureCache = utils.TextureCache;
+
+let block = [];
+let Nrow = 6;
+let Ncolum = 5;
 
 export class Game extends Application {
     constructor() {
@@ -31,7 +30,7 @@ export class Game extends Application {
         this.gameOverScene = new Scene(this.stage);
         this.gameOverScene.setVisible(false);
 
-        this.explorer = new SpriteObject(
+        block = new SpriteObject(
             this.gameScene,
             TextureCache[4 + ".png"],
             this.stage.height / 10,
@@ -53,37 +52,12 @@ export class Game extends Application {
     }
 
     loop(delta) {
-        this.explorer.x++;
+        block.x++;
     }
 
     end() {
         this.gameScene.setVisible(false);
         this.gameOverScene.setVisible(true);
-    }
-
-    moveBlob(blob) {
-        blob.vy = blob.direction * SpeedExplorer / 2;
-        blob.update(1);
-        if (blob.y < margin || blob.y > this.stage.height - margin - blob.height)
-            blob.direction *= -1;
-    }
-
-    UpdateExplorer(sprite) {
-        if (sprite.x < margin)
-            sprite.x = margin;
-        if (sprite.y < margin / 2)
-            sprite.y = margin / 2;
-        if (sprite.x > this.stage.width - margin - sprite.width)
-            sprite.x = this.stage.width - margin - sprite.width;
-        if (sprite.y > this.stage.height - margin - sprite.height)
-            sprite.y = this.stage.height - margin - sprite.height;
-    }
-
-    checkCollision() {
-        for (let i = 0; i < Nblob; i++)
-            if (this.distance(this.explorer.x + this.explorer.width / 2 - this.blob[i].x - this.blob[i].width / 2, this.explorer.y + this.explorer.height / 2 - this.blob[i].y - this.blob[i].height / 2) < margin)
-                return true;
-        return false;
     }
 
     distance(x, y) {
@@ -97,47 +71,35 @@ export class Game extends Application {
             down = new Keyboard("ArrowDown");
 
         left.setPress(() => {
-            if (this.explorer.x > 0)
-                this.explorer.vx = -SpeedExplorer;
-            else
-                this.explorer.vx = 0;
+
         });
 
         up.setPress(() => {
-            if (this.explorer.y > 0)
-                this.explorer.vy = -SpeedExplorer;
-            else
-                this.explorer.vy = 0;
+
         });
 
         right.setPress(() => {
-            if (this.explorer.x < this.stage.width - this.explorer.width / 2 - margin)
-                this.explorer.vx = SpeedExplorer;
-            else
-                this.explorer.vx = 0;
+
         });
 
         down.setPress(() => {
-            if (this.explorer.y < this.stage.width - this.explorer.height / 2 - margin)
-                this.explorer.vy = SpeedExplorer;
-            else
-                this.explorer.vy = 0;
+
         });
 
         left.setRelease(() => {
-            this.explorer.vx = 0;
+
         });
 
         up.setRelease(() => {
-            this.explorer.vy = 0;
+
         });
 
         right.setRelease(() => {
-            this.explorer.vx = 0;
+
         });
 
         down.setRelease(() => {
-            this.explorer.vy = 0;
+
         });
     }
 }
