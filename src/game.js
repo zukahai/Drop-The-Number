@@ -33,7 +33,7 @@ export class Game extends Application {
 
         this.explorer = new SpriteObject(
             this.gameScene,
-            TextureCache["explorer.png"],
+            TextureCache[4 + ".png"],
             this.stage.height / 10,
             this.stage.height / 10
         );
