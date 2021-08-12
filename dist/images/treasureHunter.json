@@ -6,7 +6,7 @@
             "rotated": false,
             "trimmed": false,
             "spriteSourceSize": { "x": 0, "y": 0, "w": 32, "h": 24 },
-            "sourceSize": { "w": 32, "h": 24 },
+            "sourceSize": { "w": 100, "h": 24 },
             "pivot": { "x": 0.5, "y": 0.5 }
         },
         "door.png": {

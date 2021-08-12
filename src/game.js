@@ -21,7 +21,7 @@ export class Game extends Application {
     }
 
     load() {
-        this.loader.add("./images/treasureHunter.json");
+        this.loader.add("./images/block.json");
         this.loader.load(() => this.setup());
     }
 
@@ -31,29 +31,6 @@ export class Game extends Application {
         this.gameOverScene = new Scene(this.stage);
         this.gameOverScene.setVisible(false);
 
-        this.dungeon = new SpriteObject(
-            this.gameScene,
-            TextureCache["dungeon.png"],
-            0,
-            0
-        );
-
-        margin = this.stage.width / 20;
-
-        this.door = new SpriteObject(
-            this.gameScene,
-            TextureCache["door.png"],
-            this.stage.width / 17,
-            0
-        );
-
-        this.treasure = new SpriteObject(
-            this.gameScene,
-            TextureCache["treasure.png"],
-            this.stage.width - 3 * margin,
-            this.stage.height - 3 * margin
-        );
-
         this.explorer = new SpriteObject(
             this.gameScene,
             TextureCache["explorer.png"],
@@ -61,16 +38,6 @@ export class Game extends Application {
             this.stage.height / 10
         );
 
-        this.blob = [];
-        for (let i = 0; i < Nblob; i++) {
-            this.blob[i] = new SpriteObject(
-                this.gameScene,
-                TextureCache["blob.png"],
-                this.stage.width / 5 + i * this.stage.width / 9,
-                this.stage.height / 2 + (Math.random() - Math.random()) * this.stage.height / 3
-            );
-            this.blob[i].direction = (Math.random() < 0.5) ? 1 : -1;
-        }
 
         this.message = new Text("", new TextStyle({
             fontFamily: "Futura",
@@ -86,33 +53,7 @@ export class Game extends Application {
     }
 
     loop(delta) {
-        // console.log(this.explorer.x, ' ', this.explorer.y);
-        if (this.explorer.vx * this.explorer.vy == 0)
-            this.explorer.update(1);
-        else
-            this.explorer.update(1 / Math.sqrt(2));
-        this.UpdateExplorer(this.explorer);
-        for (let i = 0; i < Nblob; i++) {
-            this.moveBlob(this.blob[i]);
-            this.UpdateExplorer(this.blob[i]);
-        }
-
-        if (this.checkCollision()) {
-            this.end();
-            this.message.text = "You lost!";
-            this.ticker.stop();
-        }
-
-        if (this.distance(this.door.x - this.treasure.x, this.door.y - this.treasure.y) < margin) {
-            this.end();
-            this.message.text = "You won!";
-            this.ticker.stop();
-        }
-
-        if (this.distance(this.explorer.x - this.treasure.x, this.explorer.y - this.treasure.y) < margin / 2)
-            checktreasure = true;
-        if (checktreasure)
-            this.treasure.setPosition(this.explorer.x + this.explorer.width / 2, this.explorer.y + this.explorer.height - this.treasure.height);
+        this.explorer.x++;
     }
 
     end() {
