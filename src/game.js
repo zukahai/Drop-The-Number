@@ -11,7 +11,7 @@ let Ncolum = 5;
 
 export class Game extends Application {
     constructor() {
-        super({ width: 502, height: 502 });
+        super({ width: 500, height: 600 });
         this.renderer.view.style.position = "absolute";
         this.renderer.view.style.top = "50%";
         this.renderer.view.style.left = "50%";
@@ -30,12 +30,20 @@ export class Game extends Application {
         this.gameOverScene = new Scene(this.stage);
         this.gameOverScene.setVisible(false);
 
-        block = new SpriteObject(
-            this.gameScene,
-            TextureCache[4 + ".png"],
-            this.stage.height / 10,
-            this.stage.height / 10
-        );
+        for (let i = 0; i < Nrow; i++) {
+            let temp = [];
+            for (let j = 0; j < Ncolum; j++) {
+                temp[j] = new SpriteObject(
+                    this.gameScene,
+                    TextureCache[Math.floor(Math.pow(2, Math.floor(Math.random() * 99999) % 16 + 1)) + ".png"],
+                    j * 100,
+                    i * 100
+                );
+            }
+            block[i] = temp;
+        }
+
+
 
 
         this.message = new Text("", new TextStyle({
@@ -52,7 +60,7 @@ export class Game extends Application {
     }
 
     loop(delta) {
-        block.x++;
+
     }
 
     end() {
