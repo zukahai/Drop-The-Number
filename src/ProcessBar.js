@@ -11,14 +11,14 @@ export default class ProcessBar extends Container {
         this.roundBox = new Graphics();
         this.roundBox.lineStyle(5, 0xFF00FF, 1);
         this.roundBox.beginFill(0x1C1C1C);
-        this.roundBox.drawRoundedRect(0.2 * this.blockSize, 0.2 * this.blockSize, 5 * this.blockSize, this.blockSize / 3, 10)
+        this.roundBox.drawRect(0.2 * this.blockSize, 0.2 * this.blockSize, 5 * this.blockSize, this.blockSize / 3, 10)
         this.roundBox.endFill();
         this.addChild(this.roundBox);
 
         this.processBar = new Graphics();
         this.processBar.lineStyle(5, 0xFF00FF, 1);
         this.processBar.beginFill(0x00FFCC);
-        this.processBar.drawRoundedRect(0.2 * this.blockSize, 0.2 * this.blockSize, (this.score / this.targetScore) * 5 * this.blockSize, this.blockSize / 3, 10)
+        this.processBar.drawRect(0.2 * this.blockSize, 0.2 * this.blockSize, (this.score / this.targetScore) * 5 * this.blockSize, this.blockSize / 3, 10)
         this.processBar.endFill();
         this.addChild(this.processBar);
     }
@@ -26,6 +26,6 @@ export default class ProcessBar extends Container {
     update(score) {
         this.score += score;
         this.processBar.beginFill(0x00FFCC);
-        this.processBar.drawRoundedRect(0.2 * this.blockSize, 0.2 * this.blockSize, (this.score / this.targetScore) * 5 * this.blockSize, this.blockSize / 3, 10);
+        this.processBar.drawRect(0.2 * this.blockSize, 0.2 * this.blockSize, (this.score / this.targetScore) * 5 * this.blockSize, this.blockSize / 3, 10);
     }
 }
