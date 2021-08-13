@@ -12,6 +12,7 @@ let Ncolum = 5;
 let blockSize = 80;
 let XMilestones = 0;
 let YMilestones = 0;
+let speedDown = 1;
 
 let data = [
     [0, 0, 0, 0, 0],
@@ -71,9 +72,9 @@ export class Game extends Application {
     loop(delta) {
         if (this.processBar.score <= this.processBar.targetScore)
             this.processBar.update(3);
-        this.newBlock.y++;
-        if (this.newBlock.y >= YMilestones && data[Math.floor((this.newBlock.y - YMilestones + blockSize) / blockSize)][Math.floor((this.newBlock.x - XMilestones) / blockSize)] != 0) {
-            data[Math.floor((this.newBlock.y - YMilestones) / blockSize)][Math.floor((this.newBlock.x - XMilestones) / blockSize)] = this.newBlock.randomValue;
+        this.newBlock.y += speedDown;
+        if (this.newBlock.y >= YMilestones && data[Math.floor((this.newBlock.y - YMilestones + blockSize) / blockSize)][Math.floor((this.newBlock.x - XMilestones + 0.5 * blockSize) / blockSize)] != 0) {
+            data[Math.floor((this.newBlock.y - YMilestones + 0.5 * blockSize) / blockSize)][Math.floor((this.newBlock.x - XMilestones + 0.5 * blockSize) / blockSize)] = this.newBlock.randomValue;
             this.loadData();
             this.creatBlock();
             console.log(data);
@@ -129,6 +130,16 @@ export class Game extends Application {
         return Math.sqrt(x * x + y * y);
     }
 
+    movoBlock(ch) {
+        let I = Math.floor((this.newBlock.y - YMilestones + 1 * blockSize) / blockSize);
+        let J = Math.floor((this.newBlock.x - XMilestones + 0.5 * blockSize) / blockSize);
+        if (J + ch < 0 || J + ch >= Ncolum)
+            return;
+        if (I >= 0 && data[I][J + ch] != 0)
+            return;
+        this.newBlock.x += ch * blockSize;
+    }
+
     setupController() {
         let left = new Keyboard("ArrowLeft"),
             up = new Keyboard("ArrowUp"),
@@ -136,7 +147,7 @@ export class Game extends Application {
             down = new Keyboard("ArrowDown");
 
         left.setPress(() => {
-
+            this.movoBlock(-1);
         });
 
         up.setPress(() => {
@@ -144,11 +155,11 @@ export class Game extends Application {
         });
 
         right.setPress(() => {
-
+            this.movoBlock(1);
         });
 
         down.setPress(() => {
-
+            speedDown = 5;
         });
 
         left.setRelease(() => {
@@ -164,7 +175,7 @@ export class Game extends Application {
         });
 
         down.setRelease(() => {
-
+            speedDown = 1;
         });
     }
 }
