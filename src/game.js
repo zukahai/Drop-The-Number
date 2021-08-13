@@ -17,9 +17,10 @@ let data = [
     [0, 0, 0, 0, 0],
     [4, 0, 0, 0, 0],
     [8, 0, 0, 0, 0],
-    [16, 0, 128, 0, 0],
-    [512, 32, 64, 32, 512],
-    [2048, 8, 4, 2, 1024]
+    [16, 0, 0, 0, 0],
+    [512, 32, 0, 32, 512],
+    [2048, 8, 0, 2, 1024],
+    [1, 1, 1, 1, 1]
 ]
 
 export class Game extends Application {
@@ -49,20 +50,19 @@ export class Game extends Application {
         this.processBar = new ProcessBar(1000, blockSize);
         this.gameScene.addChild(this.processBar);
 
-        let head = [];
         for (let j = 0; j < Ncolum; j++) {
-            head[j] = new SpriteObject(
+            let t = new SpriteObject(
                 this.gameScene,
                 TextureCache["head.png"],
                 j * blockSize + XMilestones,
                 YMilestones - blockSize
             );
-            head[j].width = blockSize;
-            head[j].height = blockSize;
+            t.width = blockSize;
+            t.height = blockSize;
         }
 
         this.loadData();
-        this.newBlock();
+        this.creatBlock();
 
         this.setupController();
         this.ticker.add((delta) => this.loop(delta));
@@ -71,20 +71,26 @@ export class Game extends Application {
     loop(delta) {
         if (this.processBar.score <= this.processBar.targetScore)
             this.processBar.update(3);
-        else
-            console.log("Win");
         this.newBlock.y++;
+        if (this.newBlock.y >= YMilestones && data[Math.floor((this.newBlock.y - YMilestones + blockSize) / blockSize)][Math.floor((this.newBlock.x - XMilestones) / blockSize)] != 0) {
+            data[Math.floor((this.newBlock.y - YMilestones) / blockSize)][Math.floor((this.newBlock.x - XMilestones) / blockSize)] = this.newBlock.randomValue;
+            this.loadData();
+            this.creatBlock();
+            console.log(data);
+        }
     }
 
-    newBlock() {
+    creatBlock() {
+        let randomValue = Math.floor(Math.random() * 999) % 3 + 1;
         this.newBlock = new SpriteObject(
             this.gameScene,
-            TextureCache[Math.pow(2, Math.floor(Math.random() * 999) % 3 + 1) + ".png"],
+            TextureCache[Math.pow(2, randomValue) + ".png"],
             XMilestones + 2 * blockSize,
             YMilestones - blockSize
         );
         this.newBlock.width = blockSize;
         this.newBlock.height = blockSize;
+        this.newBlock.value = randomValue;
     }
 
     loadData() {
