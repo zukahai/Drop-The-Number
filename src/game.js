@@ -1,4 +1,4 @@
-import { Application, Text, TextStyle, utils, Graphics } from "pixi.js";
+import { Application, utils } from "pixi.js";
 import Scene from "./scene.js";
 import SpriteObject from "./sprite-object.js";
 import Keyboard from "./keyboard.js";
@@ -61,6 +61,20 @@ export class Game extends Application {
             head[j].height = blockSize;
         }
 
+        this.loadData();
+
+        this.setupController();
+        this.ticker.add((delta) => this.loop(delta));
+    }
+
+    loop(delta) {
+        if (this.processBar.score <= this.processBar.targetScore)
+            this.processBar.update(3);
+        else
+            console.log("Win");
+    }
+
+    loadData() {
         for (let i = 0; i < Nrow; i++) {
             let temp = [];
             for (let j = 0; j < Ncolum; j++) {
@@ -75,28 +89,16 @@ export class Game extends Application {
             }
             block[i] = temp;
         }
-
-
-
-
-        this.message = new Text("", new TextStyle({
-            fontFamily: "Futura",
-            fontSize: 64,
-            fill: "white",
-        }));
-        this.message.x = 120;
-        this.message.y = this.stage.height / 2 - 32;
-        this.gameOverScene.addChild(this.message);
-
-        this.setupController();
-        this.ticker.add((delta) => this.loop(delta));
     }
 
-    loop(delta) {
-        if (this.processBar.score <= this.processBar.targetScore)
-            this.processBar.update(3);
-        else
-            console.log("Win");
+    updateData() {
+        for (let i = 0; i < Nrow; i++)
+            for (let j = 0; j < Ncolum; j++) {
+                data[i][j] *= 2;
+                if (data[i][j] > Math.pow(2, 16))
+                    data[i][j] = 2;
+            }
+        this.loadData();
     }
 
     end() {
@@ -119,7 +121,7 @@ export class Game extends Application {
         });
 
         up.setPress(() => {
-
+            this.updateData();
         });
 
         right.setPress(() => {
