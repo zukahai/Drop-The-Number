@@ -12,7 +12,7 @@ let Ncolum = 5;
 let blockSize = 80;
 let XMilestones = 0;
 let YMilestones = 0;
-let speedDown = 1;
+let speedDown = 0.3;
 
 let data = [
     [0, 0, 0, 0, 0],
