@@ -120,6 +120,13 @@
             "trimmed": false,
             "spriteSourceSize": { "x": 0, "y": 0, "w": 100, "h": 100 },
             "sourceSize": { "w": 100, "h": 100 }
+        },
+        "head.png": {
+            "frame": { "x": 0, "y": 400, "w": 100, "h": 100 },
+            "rotated": false,
+            "trimmed": false,
+            "spriteSourceSize": { "x": 0, "y": 0, "w": 100, "h": 100 },
+            "sourceSize": { "w": 100, "h": 100 }
         }
     },
     "meta": {

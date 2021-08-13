@@ -13,10 +13,10 @@ let XMilestones = 0;
 let YMilestones = 0;
 
 let data = [
-    [0, 0, 0, 0, 0],
-    [0, 0, 0, 0, 0],
-    [0, 0, 0, 0, 0],
-    [0, 0, 0, 0, 0],
+    [2, 0, 0, 0, 0],
+    [4, 0, 0, 0, 0],
+    [8, 0, 0, 0, 0],
+    [16, 0, 0, 0, 0],
     [512, 0, 0, 0, 512],
     [2048, 8, 4, 2, 1024]
 ]
@@ -44,6 +44,18 @@ export class Game extends Application {
 
         this.gameOverScene = new Scene(this.stage);
         this.gameOverScene.setVisible(false);
+
+        let head = [];
+        for (let j = 0; j < Ncolum; j++) {
+            head[j] = new SpriteObject(
+                this.gameScene,
+                TextureCache["head.png"],
+                j * blockSize + XMilestones,
+                YMilestones - blockSize
+            );
+            head[j].width = blockSize;
+            head[j].height = blockSize;
+        }
 
         for (let i = 0; i < Nrow; i++) {
             let temp = [];
