@@ -8,10 +8,12 @@ const TextureCache = utils.TextureCache;
 let block = [];
 let Nrow = 6;
 let Ncolum = 5;
+let blockSize = 80;
+let margin = 3;
 
 export class Game extends Application {
     constructor() {
-        super({ width: 500, height: 600 });
+        super({ width: 5 * (blockSize + 2 * margin), height: 6 * (blockSize + 2 * margin) });
         this.renderer.view.style.position = "absolute";
         this.renderer.view.style.top = "50%";
         this.renderer.view.style.left = "50%";
@@ -36,9 +38,11 @@ export class Game extends Application {
                 temp[j] = new SpriteObject(
                     this.gameScene,
                     TextureCache[Math.floor(Math.pow(2, Math.floor(Math.random() * 99999) % 16 + 1)) + ".png"],
-                    j * 100,
-                    i * 100
+                    j * (blockSize + 2 * margin) + margin,
+                    i * (blockSize + 2 * margin) + margin
                 );
+                temp[j].width = blockSize;
+                temp[j].height = blockSize;
             }
             block[i] = temp;
         }
