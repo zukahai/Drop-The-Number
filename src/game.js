@@ -62,6 +62,7 @@ export class Game extends Application {
         }
 
         this.loadData();
+        this.newBlock();
 
         this.setupController();
         this.ticker.add((delta) => this.loop(delta));
@@ -75,7 +76,7 @@ export class Game extends Application {
         this.newBlock.y++;
     }
 
-    loadData() {
+    newBlock() {
         this.newBlock = new SpriteObject(
             this.gameScene,
             TextureCache[Math.pow(2, Math.floor(Math.random() * 999) % 3 + 1) + ".png"],
@@ -84,6 +85,9 @@ export class Game extends Application {
         );
         this.newBlock.width = blockSize;
         this.newBlock.height = blockSize;
+    }
+
+    loadData() {
         for (let i = 0; i < Nrow; i++) {
             let temp = [];
             for (let j = 0; j < Ncolum; j++) {
