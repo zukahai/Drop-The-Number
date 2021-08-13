@@ -1,6 +1,13 @@
 {
     "frames": {
 
+        "0.png": {
+            "frame": { "x": 0, "y": 0, "w": 0, "h": 0 },
+            "rotated": false,
+            "trimmed": false,
+            "spriteSourceSize": { "x": 0, "y": 0, "w": 0, "h": 0 },
+            "sourceSize": { "w": 0, "h": 0 }
+        },
         "2.png": {
             "frame": { "x": 0, "y": 0, "w": 100, "h": 100 },
             "rotated": false,

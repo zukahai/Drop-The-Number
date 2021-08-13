@@ -9,17 +9,24 @@ let block = [];
 let Nrow = 6;
 let Ncolum = 5;
 let blockSize = 80;
-let margin = 3;
 let XMilestones = 0;
 let YMilestones = 0;
+
+let data = [
+    [0, 0, 0, 0, 0],
+    [0, 0, 0, 0, 0],
+    [0, 0, 0, 0, 0],
+    [0, 0, 0, 0, 0],
+    [512, 0, 0, 0, 512],
+    [2048, 8, 4, 2, 1024]
+]
 
 export class Game extends Application {
     constructor() {
         blockSize = Math.min(document.documentElement.clientWidth / (Ncolum + 1), document.documentElement.clientHeight / (Nrow + 3));
-        margin = blockSize / 20;
-        YMilestones = 2 * blockSize;
+        YMilestones = 1.7 * blockSize;
         XMilestones = 0.2 * blockSize;
-        super({ width: (Ncolum + 0.4) * (blockSize + 2 * margin), height: (Nrow + 2) * (blockSize + 2 * margin) });
+        super({ width: (Ncolum + 0.4) * blockSize, height: (Nrow + 2) * blockSize });
         this.renderer.view.style.position = "absolute";
         this.renderer.view.style.top = "50%";
         this.renderer.view.style.left = "50%";
@@ -43,9 +50,9 @@ export class Game extends Application {
             for (let j = 0; j < Ncolum; j++) {
                 temp[j] = new SpriteObject(
                     this.gameScene,
-                    TextureCache[Math.floor(Math.pow(2, Math.floor(Math.random() * 99999) % 16 + 1)) + ".png"],
-                    j * (blockSize + 2 * margin) + margin + XMilestones,
-                    i * (blockSize + 2 * margin) + margin + YMilestones
+                    TextureCache[data[i][j] + ".png"],
+                    j * blockSize + XMilestones,
+                    i * blockSize + YMilestones
                 );
                 temp[j].width = blockSize;
                 temp[j].height = blockSize;
