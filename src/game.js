@@ -12,7 +12,8 @@ let Ncolum = 5;
 let blockSize = 80;
 let XMilestones = 0;
 let YMilestones = 0;
-let speedDown = 0.1;
+let speedDown = 0.3;
+let indexNewBlock = 2;
 
 let data = [
     [0, 0, 0, 0, 0],
@@ -75,8 +76,9 @@ export class Game extends Application {
         this.newBlock.y += speedDown;
         if (this.newBlock.y >= YMilestones && data[Math.floor((this.newBlock.y - YMilestones + blockSize) / blockSize)][Math.floor((this.newBlock.x - XMilestones + 0.5 * blockSize) / blockSize)] != 0) {
             data[Math.floor((this.newBlock.y - YMilestones + 0.5 * blockSize) / blockSize)][Math.floor((this.newBlock.x - XMilestones + 0.5 * blockSize) / blockSize)] = this.newBlock.value;
-            this.newBlock.setPosition(-99999, -99999);
             this.loadData();
+            indexNewBlock = Math.floor((this.newBlock.x - XMilestones + 0.5 * blockSize) / blockSize);
+            this.newBlock.setPosition(-99999, -99999);
             this.creatBlock();
             console.log(data);
         }
@@ -87,7 +89,7 @@ export class Game extends Application {
         this.newBlock = new SpriteObject(
             this.gameScene,
             TextureCache[randomValue + ".png"],
-            XMilestones + 2 * blockSize,
+            XMilestones + indexNewBlock * blockSize,
             YMilestones - blockSize
         );
         this.newBlock.width = blockSize;
@@ -176,7 +178,7 @@ export class Game extends Application {
         });
 
         down.setRelease(() => {
-            speedDown = 1;
+            speedDown = 0.3;
         });
     }
 }
