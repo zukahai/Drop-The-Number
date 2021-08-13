@@ -72,9 +72,18 @@ export class Game extends Application {
             this.processBar.update(3);
         else
             console.log("Win");
+        this.newBlock.y++;
     }
 
     loadData() {
+        this.newBlock = new SpriteObject(
+            this.gameScene,
+            TextureCache[Math.pow(2, Math.floor(Math.random() * 999) % 3 + 1) + ".png"],
+            XMilestones + 2 * blockSize,
+            YMilestones - blockSize
+        );
+        this.newBlock.width = blockSize;
+        this.newBlock.height = blockSize;
         for (let i = 0; i < Nrow; i++) {
             let temp = [];
             for (let j = 0; j < Ncolum; j++) {
