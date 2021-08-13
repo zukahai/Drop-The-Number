@@ -1,4 +1,4 @@
-import { Application, Text, TextStyle, utils } from "pixi.js";
+import { Application, Text, TextStyle, utils, Graphics } from "pixi.js";
 import Scene from "./scene.js";
 import SpriteObject from "./sprite-object.js";
 import Keyboard from "./keyboard.js";
@@ -44,6 +44,15 @@ export class Game extends Application {
 
         this.gameOverScene = new Scene(this.stage);
         this.gameOverScene.setVisible(false);
+
+        let roundBox = new Graphics();
+        roundBox.lineStyle(3, 0x99CCFF, 1);
+        roundBox.beginFill(0xFF9933);
+        roundBox.drawRoundedRect(0, 0, 84, 36, 10)
+        roundBox.endFill();
+        roundBox.x = 48;
+        roundBox.y = 190;
+        this.stage.addChild(roundBox);
 
         let head = [];
         for (let j = 0; j < Ncolum; j++) {
