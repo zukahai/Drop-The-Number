@@ -10,10 +10,16 @@ let Nrow = 6;
 let Ncolum = 5;
 let blockSize = 80;
 let margin = 3;
+let XMilestones = 0;
+let YMilestones = 0;
 
 export class Game extends Application {
     constructor() {
-        super({ width: 5 * (blockSize + 2 * margin), height: 6 * (blockSize + 2 * margin) });
+        blockSize = Math.min(document.documentElement.clientWidth / (Ncolum + 1), document.documentElement.clientHeight / (Nrow + 3));
+        margin = blockSize / 20;
+        YMilestones = 2 * blockSize;
+        XMilestones = 0.2 * blockSize;
+        super({ width: (Ncolum + 0.4) * (blockSize + 2 * margin), height: (Nrow + 2) * (blockSize + 2 * margin) });
         this.renderer.view.style.position = "absolute";
         this.renderer.view.style.top = "50%";
         this.renderer.view.style.left = "50%";
@@ -38,8 +44,8 @@ export class Game extends Application {
                 temp[j] = new SpriteObject(
                     this.gameScene,
                     TextureCache[Math.floor(Math.pow(2, Math.floor(Math.random() * 99999) % 16 + 1)) + ".png"],
-                    j * (blockSize + 2 * margin) + margin,
-                    i * (blockSize + 2 * margin) + margin
+                    j * (blockSize + 2 * margin) + margin + XMilestones,
+                    i * (blockSize + 2 * margin) + margin + YMilestones
                 );
                 temp[j].width = blockSize;
                 temp[j].height = blockSize;
