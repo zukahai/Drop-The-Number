@@ -74,7 +74,8 @@ export class Game extends Application {
             this.processBar.update(3);
         this.newBlock.y += speedDown;
         if (this.newBlock.y >= YMilestones && data[Math.floor((this.newBlock.y - YMilestones + blockSize) / blockSize)][Math.floor((this.newBlock.x - XMilestones + 0.5 * blockSize) / blockSize)] != 0) {
-            data[Math.floor((this.newBlock.y - YMilestones + 0.5 * blockSize) / blockSize)][Math.floor((this.newBlock.x - XMilestones + 0.5 * blockSize) / blockSize)] = this.newBlock.randomValue;
+            data[Math.floor((this.newBlock.y - YMilestones + 0.5 * blockSize) / blockSize)][Math.floor((this.newBlock.x - XMilestones + 0.5 * blockSize) / blockSize)] = this.newBlock.value;
+            this.newBlock.setPosition(-99999, -99999);
             this.loadData();
             this.creatBlock();
             console.log(data);
@@ -82,10 +83,10 @@ export class Game extends Application {
     }
 
     creatBlock() {
-        let randomValue = Math.floor(Math.random() * 999) % 3 + 1;
+        let randomValue = Math.pow(2, Math.floor(Math.random() * 999) % 3 + 1);
         this.newBlock = new SpriteObject(
             this.gameScene,
-            TextureCache[Math.pow(2, randomValue) + ".png"],
+            TextureCache[randomValue + ".png"],
             XMilestones + 2 * blockSize,
             YMilestones - blockSize
         );
@@ -159,7 +160,7 @@ export class Game extends Application {
         });
 
         down.setPress(() => {
-            speedDown = 5;
+            speedDown = 7;
         });
 
         left.setRelease(() => {
