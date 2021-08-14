@@ -53,7 +53,7 @@ export class Game extends Application {
         this.gameOverScene = new Scene(this.stage);
         this.gameOverScene.setVisible(false);
 
-        this.processBar = new ProcessBar(200, blockSize);
+        this.processBar = new ProcessBar(2000, blockSize);
         this.gameScene.addChild(this.processBar);
 
         for (let j = 0; j < Ncolum; j++) {
