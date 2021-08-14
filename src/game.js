@@ -207,7 +207,7 @@ export class Game extends Application {
                 if (listDown[i] != { x: I, y: J })
                     check = false;
             if (check)
-                listDown.push({ x: I, y: J });\
+                listDown.push({ x: I, y: J });
         }
 
         data[I][J] = temp;
