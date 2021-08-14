@@ -21,10 +21,10 @@ let listDown = [];
 let data = [
     [0, 0, 0, 0, 0],
     [0, 0, 0, 0, 0],
-    [0, 0, 2, 0, 0],
-    [0, 0, 4, 0, 0],
-    [0, 0, 8, 0, 0],
-    [0, 0, 16, 0, 0],
+    [0, 0, 0, 0, 0],
+    [0, 0, 0, 0, 0],
+    [0, 0, 0, 0, 0],
+    [0, 8, 2, 4, 0],
     [1, 1, 1, 1, 1]
 ]
 
@@ -67,7 +67,7 @@ export class Game extends Application {
         }
 
         this.loadData();
-        this.creatBlock(Math.pow(2, Math.floor(Math.random() * 999) % 3 + 1), indexNewBlock, -1);
+        this.creatBlock(Math.pow(2, Math.floor(Math.random() * 999) % 1 + 1), indexNewBlock, -1);
 
         this.message = new Text("", new TextStyle({
             fontFamily: "Arial",
@@ -117,11 +117,6 @@ export class Game extends Application {
 
     loopType2() {
         let checkEndLoop2 = false;
-        if (listMove.length <= 0) {
-            this.creatBlock(Math.pow(2, Math.floor(Math.random() * 999) % 3 + 1), indexNewBlock, -1);
-            typeLoop = 1;
-            return;
-        }
         for (let i = 0; i < listMove.length; i++) {
             if (Math.abs(block[listMove[i].start.x][listMove[i].start.y].x - listMove[i].end.x) > 0.01 || Math.abs(block[listMove[i].start.x][listMove[i].start.y].y - listMove[i].end.y) > 0.01) {
                 block[listMove[i].start.x][listMove[i].start.y].x = (block[listMove[i].start.x][listMove[i].start.y].x + listMove[i].end.x) / 2;
@@ -131,6 +126,9 @@ export class Game extends Application {
                 break;
             }
         }
+
+
+
         if (checkEndLoop2) {
             this.loadData();
             for (let j = 0; j < Ncolum; j++) {
@@ -146,7 +144,6 @@ export class Game extends Application {
                     listMove.push({ start: { x: k - 1, y: j }, end: { x: block[k][j].x, y: block[k][j].y } });
                 }
             }
-            console.log(listDown);
 
             typeLoop = 3;
         }
@@ -154,11 +151,7 @@ export class Game extends Application {
 
     loopType3() {
         let checkEndLoop3 = false;
-        if (listMove.length <= 0) {
-            this.creatBlock(Math.pow(2, Math.floor(Math.random() * 999) % 3 + 1), indexNewBlock, -1);
-            typeLoop = 1;
-            return;
-        }
+
         for (let i = 0; i < listMove.length; i++) {
             if (Math.abs(block[listMove[i].start.x][listMove[i].start.y].x - listMove[i].end.x) > 0.01 || Math.abs(block[listMove[i].start.x][listMove[i].start.y].y - listMove[i].end.y) > 0.01) {
                 block[listMove[i].start.x][listMove[i].start.y].x = (block[listMove[i].start.x][listMove[i].start.y].x + listMove[i].end.x) / 2;
@@ -171,15 +164,14 @@ export class Game extends Application {
         if (checkEndLoop3) {
             this.loadData();
             listMove = [];
-            for (let i = 0; i < listDown.length; i++)
-                listMove = listMove.concat(this.listMoveBlock(listDown[i].x, listDown[i].y));
+            let listDown2 = listDown;
+            listDown = [];
+            for (let i = 0; i < listDown2.length; i++)
+                listMove = listMove.concat(this.listMoveBlock(listDown2[i].x, listDown2[i].y));
             if (listMove.length == 0) {
                 this.creatBlock(Math.pow(2, Math.floor(Math.random() * 999) % 3 + 1), indexNewBlock, -1);
                 typeLoop = 1;
             } else typeLoop = 2;
-            console.log(typeLoop);
-
-            listDown = [];
         }
     }
 
@@ -215,8 +207,7 @@ export class Game extends Application {
                 if (listDown[i] != { x: I, y: J })
                     check = false;
             if (check)
-                listDown.push({ x: I, y: J });
-            console.log(I, ' ', J);
+                listDown.push({ x: I, y: J });\
         }
 
         data[I][J] = temp;
