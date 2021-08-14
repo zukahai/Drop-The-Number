@@ -16,14 +16,15 @@ let speedDown = 0.3;
 let indexNewBlock = 2;
 let typeLoop = 1;
 let listMove = [];
+let listDown = [];
 
 let data = [
     [0, 0, 0, 0, 0],
     [0, 0, 0, 0, 0],
     [0, 0, 0, 0, 0],
-    [0, 0, 0, 0, 0],
-    [8, 0, 8, 0, 4],
-    [4, 8, 2, 2, 8],
+    [0, 4, 0, 4, 0],
+    [0, 2, 0, 2, 16],
+    [4, 8, 2, 16, 8],
     [1, 1, 1, 1, 1]
 ]
 
@@ -66,7 +67,7 @@ export class Game extends Application {
         }
 
         this.loadData();
-        this.creatBlock(Math.pow(2, Math.floor(Math.random() * 999) % 3 + 1), indexNewBlock, -1);
+        this.creatBlock(Math.pow(2, Math.floor(Math.random() * 999) % 1 + 1), indexNewBlock, -1);
 
         this.message = new Text("", new TextStyle({
             fontFamily: "Arial",
@@ -108,20 +109,22 @@ export class Game extends Application {
         if (this.newBlock.y >= YMilestones && data[Math.floor((this.newBlock.y - YMilestones + blockSize) / blockSize)][Math.floor((this.newBlock.x - XMilestones + 0.5 * blockSize) / blockSize)] != 0) {
             data[Math.floor((this.newBlock.y - YMilestones + 0.5 * blockSize) / blockSize)][Math.floor((this.newBlock.x - XMilestones + 0.5 * blockSize) / blockSize)] = this.newBlock.value;
             indexNewBlock = Math.floor((this.newBlock.x - XMilestones + 0.5 * blockSize) / blockSize);
-            this.loadData();
             this.newBlock.alpha = 0;
-            console.log(data);
-
-            listMove = this.listMoveBlock();
-
+            listMove = this.listMoveBlock(Math.floor((this.newBlock.y - YMilestones + 0.5 * blockSize) / blockSize), Math.floor((this.newBlock.x - XMilestones + 0.5 * blockSize) / blockSize));
             typeLoop = 2;
+            // this.loadData();
+            // console.log("Hello");
         }
     }
 
     loopType2() {
+        listDown = [];
         let checkEndLoop2 = false;
-        if (listMove.length <= 0)
-            checkEndLoop2 = true;
+        if (listMove.length <= 0) {
+            this.creatBlock(Math.pow(2, Math.floor(Math.random() * 999) % 3 + 1), indexNewBlock, -1);
+            typeLoop = 1;
+            return;
+        }
         for (let i = 0; i < listMove.length; i++) {
             if (Math.abs(block[listMove[i].start.x][listMove[i].start.y].x - listMove[i].end.x) > 0.01 || Math.abs(block[listMove[i].start.x][listMove[i].start.y].y - listMove[i].end.y) > 0.01) {
                 block[listMove[i].start.x][listMove[i].start.y].x = (block[listMove[i].start.x][listMove[i].start.y].x + listMove[i].end.x) / 2;
@@ -132,17 +135,12 @@ export class Game extends Application {
             }
         }
         if (checkEndLoop2) {
-            this.creatBlock(Math.pow(2, Math.floor(Math.random() * 999) % 3 + 1), indexNewBlock, -1);
             this.loadData();
-
-            listMove = [];
             for (let j = 0; j < Ncolum; j++) {
                 let i = Nrow - 1;
-                for (i = Nrow - 1; i >= 0; i--)
-                    if (data[i][j] == 0) {
-                        // if (i > 0 && data[i - 1][j] != 0) {
-                        //     this.newBlock.x =
-                        // }
+                for (i = Nrow - 1; i >= 1; i--)
+                    if (data[i][j] == 0 && data[i - 1][j] != 0) {
+                        listDown.push({ x: i, y: j });
                         break;
                     }
 
@@ -151,15 +149,19 @@ export class Game extends Application {
                     listMove.push({ start: { x: k - 1, y: j }, end: { x: block[k][j].x, y: block[k][j].y } });
                 }
             }
+            console.log(listDown);
+
             typeLoop = 3;
         }
     }
 
     loopType3() {
-        console.log(listMove);
         let checkEndLoop3 = false;
-        if (listMove.length <= 0)
-            checkEndLoop3 = true;
+        if (listMove.length <= 0) {
+            this.creatBlock(Math.pow(2, Math.floor(Math.random() * 999) % 3 + 1), indexNewBlock, -1);
+            typeLoop = 1;
+            return;
+        }
         for (let i = 0; i < listMove.length; i++) {
             if (Math.abs(block[listMove[i].start.x][listMove[i].start.y].x - listMove[i].end.x) > 0.01 || Math.abs(block[listMove[i].start.x][listMove[i].start.y].y - listMove[i].end.y) > 0.01) {
                 block[listMove[i].start.x][listMove[i].start.y].x = (block[listMove[i].start.x][listMove[i].start.y].x + listMove[i].end.x) / 2;
@@ -170,36 +172,53 @@ export class Game extends Application {
             }
         }
         if (checkEndLoop3) {
-            typeLoop = 1;
+            this.loadData();
+            listMove = [];
+            for (let i = 0; i < listDown.length; i++)
+                listMove = listMove.concat(this.listMoveBlock(listDown[i].x, listDown[i].y));
+            if (listMove.length == 0) {
+                this.creatBlock(Math.pow(2, Math.floor(Math.random() * 999) % 3 + 1), indexNewBlock, -1);
+                typeLoop = 1;
+            } else typeLoop = 2;
         }
     }
 
-    listMoveBlock() {
-        let listMove = [];
-        let I = Math.floor((this.newBlock.y - YMilestones + 0.5 * blockSize) / blockSize);
-        let J = Math.floor((this.newBlock.x - XMilestones + 0.5 * blockSize) / blockSize);
+    listMoveBlock(x, y) {
+        let listMove2 = [];
+        let I = x;
+        let J = y;
+        console.log(I, ' ', J);
 
         let temp = data[I][J];
         if (I >= 0 && I < Nrow - 1 && data[I][J] == data[I + 1][J]) {
-            listMove.push({ start: { x: I + 1, y: J }, end: { x: block[I][J].x, y: block[I][J].y } });
+            listMove2.push({ start: { x: I + 1, y: J }, end: { x: block[I][J].x, y: block[I][J].y } });
             temp *= 2;
             data[I + 1][J] = 0;
+            // console.log("Down");
         }
         if (I >= 0 && J >= 1 && data[I][J] == data[I][J - 1]) {
-            listMove.push({ start: { x: I, y: J - 1 }, end: { x: block[I][J].x, y: block[I][J].y } });
+            listMove2.push({ start: { x: I, y: J - 1 }, end: { x: block[I][J].x, y: block[I][J].y } });
             temp *= 2;
             data[I][J - 1] = 0;
+            // console.log("Left");
         }
 
         if (I >= 0 && J < Ncolum && data[I][J] == data[I][J + 1]) {
-            listMove.push({ start: { x: I, y: J + 1 }, end: { x: block[I][J].x, y: block[I][J].y } });
+            listMove2.push({ start: { x: I, y: J + 1 }, end: { x: block[I][J].x, y: block[I][J].y } });
             temp *= 2;
             data[I][J + 1] = 0;
+            console.log(x, ' ', y, ' ', Math.floor((block[I][J + 1].y - YMilestones + 0.5 * blockSize) / blockSize), ' ', Math.floor((block[I][J + 1].x - XMilestones + 0.5 * blockSize) / blockSize));
         }
+
         if (this.processBar.score <= this.processBar.targetScore)
             this.processBar.update((temp == data[I][J]) ? 0 : temp);
+        // if (data[I][J] != temp && data[I + 1][J] != 0) {
+        //     listDown2.push({ x: I, y: J });
+        //     console.log("Add ", data[I + 1][J], ' ', listDown);
+        // }
+
         data[I][J] = temp;
-        return listMove;
+        return listMove2;
     }
 
     checkLost() {
@@ -210,11 +229,14 @@ export class Game extends Application {
     }
 
     creatBlock(value, x, y) {
+        this.loadData();
+        if (this.newBlock != undefined)
+            this.newBlock.alpha = 0;
         this.newBlock = new SpriteObject(
             this.gameScene,
             TextureCache[value + ".png"],
             XMilestones + x * blockSize,
-            YMilestones - y * blockSize
+            YMilestones + y * blockSize
         );
         this.newBlock.width = blockSize;
         this.newBlock.height = blockSize;
@@ -243,13 +265,13 @@ export class Game extends Application {
     }
 
     updateData() {
-        for (let i = 0; i < Nrow; i++)
-            for (let j = 0; j < Ncolum; j++) {
-                data[i][j] *= 2;
-                if (data[i][j] > Math.pow(2, 16))
-                    data[i][j] = 2;
-            }
-        this.loadData();
+        // for (let i = 0; i < Nrow; i++)
+        //     for (let j = 0; j < Ncolum; j++) {
+        //         data[i][j] *= 2;
+        //         if (data[i][j] > Math.pow(2, 16))
+        //             data[i][j] = 2;
+        //     }
+        // this.loadData();
     }
 
     end() {
