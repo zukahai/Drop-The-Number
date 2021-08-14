@@ -1,4 +1,4 @@
-import { Application, utils } from "pixi.js";
+import { Application, Text, TextStyle, TextureLoader, utils } from "pixi.js";
 import Scene from "./scene.js";
 import SpriteObject from "./sprite-object.js";
 import Keyboard from "./keyboard.js";
@@ -14,14 +14,16 @@ let XMilestones = 0;
 let YMilestones = 0;
 let speedDown = 0.3;
 let indexNewBlock = 2;
+let typeLoop = 1;
+let listMove = [];
 
 let data = [
     [0, 0, 0, 0, 0],
+    [0, 0, 0, 0, 0],
+    [2, 0, 0, 0, 0],
     [4, 0, 0, 0, 0],
-    [8, 0, 0, 0, 0],
-    [16, 0, 0, 0, 0],
-    [512, 32, 0, 32, 512],
-    [2048, 8, 0, 2, 1024],
+    [8, 32, 0, 32, 8],
+    [4, 8, 0, 2, 32],
     [1, 1, 1, 1, 1]
 ]
 
@@ -66,22 +68,52 @@ export class Game extends Application {
         this.loadData();
         this.creatBlock();
 
+        this.message = new Text("", new TextStyle({
+            fontFamily: "Arial",
+            fontSize: 64,
+            fill: "#00FFFF",
+            stroke: '#ff3300',
+            strokeThickness: 4,
+            dropShadow: true,
+            dropShadowColor: "green",
+            dropShadowBlur: 4,
+            dropShadowAngle: Math.PI / 6,
+            dropShadowDistance: 6,
+        }));
+        this.message.x = 60;
+        this.message.y = this.stage.height / 2 - 32;
+        this.gameOverScene.addChild(this.message);
+
         this.setupController();
         this.ticker.add((delta) => this.loop(delta));
     }
 
     loop(delta) {
-        if (this.processBar.score <= this.processBar.targetScore)
-            this.processBar.update(3);
-        this.newBlock.y += speedDown;
-        if (this.newBlock.y >= YMilestones && data[Math.floor((this.newBlock.y - YMilestones + blockSize) / blockSize)][Math.floor((this.newBlock.x - XMilestones + 0.5 * blockSize) / blockSize)] != 0) {
-            data[Math.floor((this.newBlock.y - YMilestones + 0.5 * blockSize) / blockSize)][Math.floor((this.newBlock.x - XMilestones + 0.5 * blockSize) / blockSize)] = this.newBlock.value;
-            this.loadData();
-            indexNewBlock = Math.floor((this.newBlock.x - XMilestones + 0.5 * blockSize) / blockSize);
-            this.newBlock.alpha = 0;
-            this.creatBlock();
-            console.log(data);
+        if (this.checkLost()) {
+            this.end();
+            this.message.text = "You lost!";
+            this.ticker.stop();
         }
+        if (typeLoop == 1) {
+            this.newBlock.y += speedDown;
+            if (this.newBlock.y >= YMilestones && data[Math.floor((this.newBlock.y - YMilestones + blockSize) / blockSize)][Math.floor((this.newBlock.x - XMilestones + 0.5 * blockSize) / blockSize)] != 0) {
+                data[Math.floor((this.newBlock.y - YMilestones + 0.5 * blockSize) / blockSize)][Math.floor((this.newBlock.x - XMilestones + 0.5 * blockSize) / blockSize)] = this.newBlock.value;
+                this.loadData();
+                indexNewBlock = Math.floor((this.newBlock.x - XMilestones + 0.5 * blockSize) / blockSize);
+                this.newBlock.alpha = 0;
+                this.creatBlock();
+                console.log(data);
+                if (this.processBar.score <= this.processBar.targetScore)
+                    this.processBar.update(33);
+            }
+        }
+    }
+
+    checkLost() {
+        for (let j = 0; j < Ncolum; j++)
+            if (data[0][j] != 0)
+                return true;
+        return false;
     }
 
     creatBlock() {
