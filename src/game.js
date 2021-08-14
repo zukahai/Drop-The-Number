@@ -101,11 +101,20 @@ export class Game extends Application {
                 this.loadData();
                 indexNewBlock = Math.floor((this.newBlock.x - XMilestones + 0.5 * blockSize) / blockSize);
                 this.newBlock.alpha = 0;
-                this.creatBlock();
                 console.log(data);
                 if (this.processBar.score <= this.processBar.targetScore)
                     this.processBar.update(33);
+                listMove = [];
+                let I = Math.floor((this.newBlock.y - YMilestones + 0.5 * blockSize) / blockSize);
+                let J = Math.floor((this.newBlock.x - XMilestones + 0.5 * blockSize) / blockSize);
+                if (I >= 0 && I < Nrow && data[I][J] == data[I + 1][J]) {
+                    listMove.push({ start: data[I + 1][J], end: this.movoBlock })
+                }
+                typeLoop = 2;
             }
+        } else if (typeLoop == 2) {
+            this.creatBlock();
+            typeLoop = 1;
         }
     }
 
