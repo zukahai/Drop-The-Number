@@ -51,7 +51,7 @@ export class Game extends Application {
         this.gameOverScene = new Scene(this.stage);
         this.gameOverScene.setVisible(false);
 
-        this.processBar = new ProcessBar(1000, blockSize);
+        this.processBar = new ProcessBar(200, blockSize);
         this.gameScene.addChild(this.processBar);
 
         for (let j = 0; j < Ncolum; j++) {
@@ -102,8 +102,6 @@ export class Game extends Application {
                 this.loadData();
                 this.newBlock.alpha = 0;
                 console.log(data);
-                if (this.processBar.score <= this.processBar.targetScore)
-                    this.processBar.update(33);
 
                 listMove = this.listMoveBlock();
 
@@ -153,6 +151,8 @@ export class Game extends Application {
             temp *= 2;
             data[I][J + 1] = 0;
         }
+        if (this.processBar.score <= this.processBar.targetScore)
+            this.processBar.update((temp == data[I][J]) ? 0 : temp);
         data[I][J] = temp;
         return listMove;
     }
