@@ -22,9 +22,9 @@ let data = [
     [0, 0, 0, 0, 0],
     [0, 0, 0, 0, 0],
     [0, 0, 0, 0, 0],
-    [0, 4, 0, 4, 0],
-    [0, 2, 0, 2, 16],
-    [4, 8, 2, 16, 8],
+    [0, 0, 0, 0, 0],
+    [0, 0, 0, 0, 0],
+    [0, 0, 0, 0, 0],
     [1, 1, 1, 1, 1]
 ]
 
@@ -112,13 +112,10 @@ export class Game extends Application {
             this.newBlock.alpha = 0;
             listMove = this.listMoveBlock(Math.floor((this.newBlock.y - YMilestones + 0.5 * blockSize) / blockSize), Math.floor((this.newBlock.x - XMilestones + 0.5 * blockSize) / blockSize));
             typeLoop = 2;
-            // this.loadData();
-            // console.log("Hello");
         }
     }
 
     loopType2() {
-        listDown = [];
         let checkEndLoop2 = false;
         if (listMove.length <= 0) {
             this.creatBlock(Math.pow(2, Math.floor(Math.random() * 999) % 3 + 1), indexNewBlock, -1);
@@ -180,6 +177,9 @@ export class Game extends Application {
                 this.creatBlock(Math.pow(2, Math.floor(Math.random() * 999) % 3 + 1), indexNewBlock, -1);
                 typeLoop = 1;
             } else typeLoop = 2;
+            console.log(typeLoop);
+
+            listDown = [];
         }
     }
 
@@ -187,35 +187,37 @@ export class Game extends Application {
         let listMove2 = [];
         let I = x;
         let J = y;
-        console.log(I, ' ', J);
 
         let temp = data[I][J];
         if (I >= 0 && I < Nrow - 1 && data[I][J] == data[I + 1][J]) {
             listMove2.push({ start: { x: I + 1, y: J }, end: { x: block[I][J].x, y: block[I][J].y } });
             temp *= 2;
             data[I + 1][J] = 0;
-            // console.log("Down");
         }
         if (I >= 0 && J >= 1 && data[I][J] == data[I][J - 1]) {
             listMove2.push({ start: { x: I, y: J - 1 }, end: { x: block[I][J].x, y: block[I][J].y } });
             temp *= 2;
             data[I][J - 1] = 0;
-            // console.log("Left");
         }
 
         if (I >= 0 && J < Ncolum && data[I][J] == data[I][J + 1]) {
             listMove2.push({ start: { x: I, y: J + 1 }, end: { x: block[I][J].x, y: block[I][J].y } });
             temp *= 2;
             data[I][J + 1] = 0;
-            console.log(x, ' ', y, ' ', Math.floor((block[I][J + 1].y - YMilestones + 0.5 * blockSize) / blockSize), ' ', Math.floor((block[I][J + 1].x - XMilestones + 0.5 * blockSize) / blockSize));
+            // console.log(x, ' ', y, ' ', Math.floor((block[I][J + 1].y - YMilestones + 0.5 * blockSize) / blockSize), ' ', Math.floor((block[I][J + 1].x - XMilestones + 0.5 * blockSize) / blockSize));
         }
 
         if (this.processBar.score <= this.processBar.targetScore)
             this.processBar.update((temp == data[I][J]) ? 0 : temp);
-        // if (data[I][J] != temp && data[I + 1][J] != 0) {
-        //     listDown2.push({ x: I, y: J });
-        //     console.log("Add ", data[I + 1][J], ' ', listDown);
-        // }
+        if (data[I][J] != temp && data[I + 1][J] != 0) {
+            let check = true;
+            for (let i = 0; i < listDown.length; i++)
+                if (listDown[i] != { x: I, y: J })
+                    check = false;
+            if (check)
+                listDown.push({ x: I, y: J });
+            console.log(I, ' ', J);
+        }
 
         data[I][J] = temp;
         return listMove2;
