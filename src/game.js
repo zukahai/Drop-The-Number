@@ -66,7 +66,7 @@ export class Game extends Application {
         }
 
         this.loadData();
-        this.creatBlock();
+        this.creatBlock(Math.pow(2, Math.floor(Math.random() * 999) % 3 + 1), indexNewBlock, -1);
 
         this.message = new Text("", new TextStyle({
             fontFamily: "Arial",
@@ -132,15 +132,20 @@ export class Game extends Application {
             }
         }
         if (checkEndLoop2) {
-            this.creatBlock();
+            this.creatBlock(Math.pow(2, Math.floor(Math.random() * 999) % 3 + 1), indexNewBlock, -1);
             this.loadData();
 
             listMove = [];
             for (let j = 0; j < Ncolum; j++) {
                 let i = Nrow - 1;
                 for (i = Nrow - 1; i >= 0; i--)
-                    if (data[i][j] == 0)
+                    if (data[i][j] == 0) {
+                        // if (i > 0 && data[i - 1][j] != 0) {
+                        //     this.newBlock.x =
+                        // }
                         break;
+                    }
+
                 for (let k = i; k >= 1; k--) {
                     data[k][j] = data[k - 1][j];
                     listMove.push({ start: { x: k - 1, y: j }, end: { x: block[k][j].x, y: block[k][j].y } });
@@ -204,17 +209,16 @@ export class Game extends Application {
         return false;
     }
 
-    creatBlock() {
-        let randomValue = Math.pow(2, Math.floor(Math.random() * 999) % 3 + 1);
+    creatBlock(value, x, y) {
         this.newBlock = new SpriteObject(
             this.gameScene,
-            TextureCache[randomValue + ".png"],
-            XMilestones + indexNewBlock * blockSize,
-            YMilestones - blockSize
+            TextureCache[value + ".png"],
+            XMilestones + x * blockSize,
+            YMilestones - y * blockSize
         );
         this.newBlock.width = blockSize;
         this.newBlock.height = blockSize;
-        this.newBlock.value = randomValue;
+        this.newBlock.value = value;
     }
 
     loadData() {
