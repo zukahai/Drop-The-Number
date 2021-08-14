@@ -117,6 +117,8 @@ export class Game extends Application {
 
     loopType2() {
         let checkEndLoop2 = false;
+        if (listMove.length == 0)
+            checkEndLoop2 = true;
         for (let i = 0; i < listMove.length; i++) {
             if (Math.abs(block[listMove[i].start.x][listMove[i].start.y].x - listMove[i].end.x) > 0.01 || Math.abs(block[listMove[i].start.x][listMove[i].start.y].y - listMove[i].end.y) > 0.01) {
                 block[listMove[i].start.x][listMove[i].start.y].x = (block[listMove[i].start.x][listMove[i].start.y].x + listMove[i].end.x) / 2;
@@ -151,6 +153,8 @@ export class Game extends Application {
 
     loopType3() {
         let checkEndLoop3 = false;
+        if (listMove.length == 0)
+            checkEndLoop3 = true;
 
         for (let i = 0; i < listMove.length; i++) {
             if (Math.abs(block[listMove[i].start.x][listMove[i].start.y].x - listMove[i].end.x) > 0.01 || Math.abs(block[listMove[i].start.x][listMove[i].start.y].y - listMove[i].end.y) > 0.01) {
@@ -201,6 +205,12 @@ export class Game extends Application {
 
         if (this.processBar.score <= this.processBar.targetScore)
             this.processBar.update((temp == data[I][J]) ? 0 : temp);
+        else {
+            this.end();
+            this.message.text = "You win!";
+            this.ticker.stop();
+        }
+
         if (data[I][J] != temp && data[I + 1][J] != 0) {
             let check = true;
             for (let i = 0; i < listDown.length; i++)
@@ -257,16 +267,6 @@ export class Game extends Application {
         }
     }
 
-    updateData() {
-        // for (let i = 0; i < Nrow; i++)
-        //     for (let j = 0; j < Ncolum; j++) {
-        //         data[i][j] *= 2;
-        //         if (data[i][j] > Math.pow(2, 16))
-        //             data[i][j] = 2;
-        //     }
-        // this.loadData();
-    }
-
     end() {
         this.gameScene.setVisible(false);
         this.gameOverScene.setVisible(true);
@@ -297,7 +297,7 @@ export class Game extends Application {
         });
 
         up.setPress(() => {
-            this.updateData();
+
         });
 
         right.setPress(() => {
