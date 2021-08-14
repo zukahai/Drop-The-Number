@@ -78,7 +78,7 @@ export class Game extends Application {
             data[Math.floor((this.newBlock.y - YMilestones + 0.5 * blockSize) / blockSize)][Math.floor((this.newBlock.x - XMilestones + 0.5 * blockSize) / blockSize)] = this.newBlock.value;
             this.loadData();
             indexNewBlock = Math.floor((this.newBlock.x - XMilestones + 0.5 * blockSize) / blockSize);
-            this.newBlock.setPosition(-99999, -99999);
+            this.newBlock.alpha = 0;
             this.creatBlock();
             console.log(data);
         }
