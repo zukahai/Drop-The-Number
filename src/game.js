@@ -17,6 +17,7 @@ let indexNewBlock = 2;
 let typeLoop = 1;
 let listMove = [];
 let listDown = [];
+let blur = 0.8;
 
 let data = [
     [0, 0, 0, 0, 0],
@@ -189,18 +190,28 @@ export class Game extends Application {
             listMove2.push({ start: { x: I + 1, y: J }, end: { x: block[I][J].x, y: block[I][J].y } });
             temp *= 2;
             data[I + 1][J] = 0;
+            block[I + 1][J].alpha = blur;
         }
+
+        if (I >= 1 && I < Nrow - 1 && data[I][J] == data[I - 1][J]) {
+            listMove2.push({ start: { x: I - 1, y: J }, end: { x: block[I][J].x, y: block[I][J].y } });
+            temp *= 2;
+            data[I - 1][J] = 0;
+            block[I - 1][J].alpha = blur;
+        }
+
         if (I >= 0 && J >= 1 && data[I][J] == data[I][J - 1]) {
             listMove2.push({ start: { x: I, y: J - 1 }, end: { x: block[I][J].x, y: block[I][J].y } });
             temp *= 2;
             data[I][J - 1] = 0;
+            block[I][J - 1].alpha = blur;
         }
 
         if (I >= 0 && J < Ncolum && data[I][J] == data[I][J + 1]) {
             listMove2.push({ start: { x: I, y: J + 1 }, end: { x: block[I][J].x, y: block[I][J].y } });
             temp *= 2;
             data[I][J + 1] = 0;
-            // console.log(x, ' ', y, ' ', Math.floor((block[I][J + 1].y - YMilestones + 0.5 * blockSize) / blockSize), ' ', Math.floor((block[I][J + 1].x - XMilestones + 0.5 * blockSize) / blockSize));
+            block[I][J + 1].alpha = blur;
         }
 
         if (this.processBar.score < this.processBar.targetScore)
