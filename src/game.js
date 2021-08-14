@@ -203,7 +203,7 @@ export class Game extends Application {
             // console.log(x, ' ', y, ' ', Math.floor((block[I][J + 1].y - YMilestones + 0.5 * blockSize) / blockSize), ' ', Math.floor((block[I][J + 1].x - XMilestones + 0.5 * blockSize) / blockSize));
         }
 
-        if (this.processBar.score <= this.processBar.targetScore)
+        if (this.processBar.score < this.processBar.targetScore)
             this.processBar.update((temp == data[I][J]) ? 0 : temp);
         else {
             this.end();

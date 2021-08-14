@@ -25,6 +25,8 @@ export default class ProcessBar extends Container {
 
     update(score) {
         this.score += score;
+        if (this.score > this.targetScore)
+            this.score = this.targetScore;
         this.processBar.beginFill(0x00FFCC);
         this.processBar.drawRect(0.2 * this.blockSize, 0.2 * this.blockSize, (this.score / this.targetScore) * 5 * this.blockSize, this.blockSize / 3, 10);
     }
