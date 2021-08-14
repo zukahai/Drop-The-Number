@@ -91,11 +91,6 @@ export class Game extends Application {
     }
 
     loop(delta) {
-        if (this.checkLost()) {
-            this.end();
-            this.message.text = "You lost!";
-            this.ticker.stop();
-        }
         if (typeLoop == 1) {
             this.loopType1();
         } else if (typeLoop == 2) {
@@ -107,6 +102,11 @@ export class Game extends Application {
 
     loopType1() {
         this.newBlock.y += speedDown;
+        if (this.checkLost()) {
+            this.end();
+            this.message.text = "You lost!";
+            this.ticker.stop();
+        }
         if (this.newBlock.y >= YMilestones && data[Math.floor((this.newBlock.y - YMilestones + blockSize) / blockSize)][Math.floor((this.newBlock.x - XMilestones + 0.5 * blockSize) / blockSize)] != 0) {
             data[Math.floor((this.newBlock.y - YMilestones + 0.5 * blockSize) / blockSize)][Math.floor((this.newBlock.x - XMilestones + 0.5 * blockSize) / blockSize)] = this.newBlock.value;
             indexNewBlock = Math.floor((this.newBlock.x - XMilestones + 0.5 * blockSize) / blockSize);
