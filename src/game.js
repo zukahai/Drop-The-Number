@@ -21,10 +21,10 @@ let listDown = [];
 let data = [
     [0, 0, 0, 0, 0],
     [0, 0, 0, 0, 0],
-    [0, 0, 0, 0, 0],
-    [0, 0, 0, 0, 0],
-    [0, 0, 0, 0, 0],
-    [0, 0, 0, 0, 0],
+    [0, 0, 2, 0, 0],
+    [0, 0, 4, 0, 0],
+    [0, 0, 8, 0, 0],
+    [0, 0, 16, 0, 0],
     [1, 1, 1, 1, 1]
 ]
 
@@ -67,7 +67,7 @@ export class Game extends Application {
         }
 
         this.loadData();
-        this.creatBlock(Math.pow(2, Math.floor(Math.random() * 999) % 1 + 1), indexNewBlock, -1);
+        this.creatBlock(Math.pow(2, Math.floor(Math.random() * 999) % 3 + 1), indexNewBlock, -1);
 
         this.message = new Text("", new TextStyle({
             fontFamily: "Arial",
