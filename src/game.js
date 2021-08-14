@@ -249,7 +249,7 @@ export class Game extends Application {
                 if (k < Math.floor(Math.log2(data[i][j])))
                     k = Math.floor(Math.log2(data[i][j]));
         if (k > 6)
-            k = floor(k / 2);
+            k = Math.floor((k + 1) / 2);
         else k = 3;
         let value = Math.pow(2, Math.floor(Math.random() * 999) % k + 1);
         this.loadData();
