@@ -20,10 +20,10 @@ let listMove = [];
 let data = [
     [0, 0, 0, 0, 0],
     [0, 0, 0, 0, 0],
-    [2, 0, 0, 0, 0],
-    [4, 0, 0, 0, 0],
-    [8, 32, 0, 32, 8],
-    [4, 8, 4, 2, 32],
+    [0, 0, 0, 0, 0],
+    [0, 0, 0, 0, 0],
+    [0, 0, 0, 0, 4],
+    [4, 8, 2, 2, 8],
     [1, 1, 1, 1, 1]
 ]
 
@@ -121,9 +121,9 @@ export class Game extends Application {
             if (listMove.length <= 0)
                 checkEndLoop2 = true;
             for (let i = 0; i < listMove.length; i++) {
-                if (Math.abs(block[listMove[i].start.x][listMove[i].start.x].x - listMove[i].end.x) > 0.01 || Math.abs(block[listMove[i].start.x][listMove[i].start.x].y - listMove[i].end.y) > 0.01) {
-                    block[listMove[i].start.x][listMove[i].start.x].x = (block[listMove[i].start.x][listMove[i].start.x].x + listMove[i].end.x) / 2;
-                    block[listMove[i].start.x][listMove[i].start.x].y = (block[listMove[i].start.x][listMove[i].start.x].y + listMove[i].end.y) / 2;
+                if (Math.abs(block[listMove[i].start.x][listMove[i].start.y].x - listMove[i].end.x) > 0.01 || Math.abs(block[listMove[i].start.x][listMove[i].start.y].y - listMove[i].end.y) > 0.01) {
+                    block[listMove[i].start.x][listMove[i].start.y].x = (block[listMove[i].start.x][listMove[i].start.y].x + listMove[i].end.x) / 2;
+                    block[listMove[i].start.x][listMove[i].start.y].y = (block[listMove[i].start.x][listMove[i].start.y].y + listMove[i].end.y) / 2;
                     console.log("Hello");
                 } else {
                     checkEndLoop2 = true;
