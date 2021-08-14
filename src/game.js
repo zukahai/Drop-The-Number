@@ -95,37 +95,45 @@ export class Game extends Application {
             this.ticker.stop();
         }
         if (typeLoop == 1) {
-            this.newBlock.y += speedDown;
-            if (this.newBlock.y >= YMilestones && data[Math.floor((this.newBlock.y - YMilestones + blockSize) / blockSize)][Math.floor((this.newBlock.x - XMilestones + 0.5 * blockSize) / blockSize)] != 0) {
-                data[Math.floor((this.newBlock.y - YMilestones + 0.5 * blockSize) / blockSize)][Math.floor((this.newBlock.x - XMilestones + 0.5 * blockSize) / blockSize)] = this.newBlock.value;
-                indexNewBlock = Math.floor((this.newBlock.x - XMilestones + 0.5 * blockSize) / blockSize);
-                this.loadData();
-                this.newBlock.alpha = 0;
-                console.log(data);
-
-                listMove = this.listMoveBlock();
-
-                typeLoop = 2;
-            }
+            this.loopType1();
         } else if (typeLoop == 2) {
-            console.log(listMove.length);
-            let checkEndLoop2 = false;
-            if (listMove.length <= 0)
+            this.loopType2();
+        }
+    }
+
+    loopType1() {
+        this.newBlock.y += speedDown;
+        if (this.newBlock.y >= YMilestones && data[Math.floor((this.newBlock.y - YMilestones + blockSize) / blockSize)][Math.floor((this.newBlock.x - XMilestones + 0.5 * blockSize) / blockSize)] != 0) {
+            data[Math.floor((this.newBlock.y - YMilestones + 0.5 * blockSize) / blockSize)][Math.floor((this.newBlock.x - XMilestones + 0.5 * blockSize) / blockSize)] = this.newBlock.value;
+            indexNewBlock = Math.floor((this.newBlock.x - XMilestones + 0.5 * blockSize) / blockSize);
+            this.loadData();
+            this.newBlock.alpha = 0;
+            console.log(data);
+
+            listMove = this.listMoveBlock();
+
+            typeLoop = 2;
+        }
+    }
+
+    loopType2() {
+        console.log(listMove.length);
+        let checkEndLoop2 = false;
+        if (listMove.length <= 0)
+            checkEndLoop2 = true;
+        for (let i = 0; i < listMove.length; i++) {
+            if (Math.abs(block[listMove[i].start.x][listMove[i].start.y].x - listMove[i].end.x) > 0.01 || Math.abs(block[listMove[i].start.x][listMove[i].start.y].y - listMove[i].end.y) > 0.01) {
+                block[listMove[i].start.x][listMove[i].start.y].x = (block[listMove[i].start.x][listMove[i].start.y].x + listMove[i].end.x) / 2;
+                block[listMove[i].start.x][listMove[i].start.y].y = (block[listMove[i].start.x][listMove[i].start.y].y + listMove[i].end.y) / 2;
+            } else {
                 checkEndLoop2 = true;
-            for (let i = 0; i < listMove.length; i++) {
-                if (Math.abs(block[listMove[i].start.x][listMove[i].start.y].x - listMove[i].end.x) > 0.01 || Math.abs(block[listMove[i].start.x][listMove[i].start.y].y - listMove[i].end.y) > 0.01) {
-                    block[listMove[i].start.x][listMove[i].start.y].x = (block[listMove[i].start.x][listMove[i].start.y].x + listMove[i].end.x) / 2;
-                    block[listMove[i].start.x][listMove[i].start.y].y = (block[listMove[i].start.x][listMove[i].start.y].y + listMove[i].end.y) / 2;
-                } else {
-                    checkEndLoop2 = true;
-                    break;
-                }
+                break;
             }
-            if (checkEndLoop2) {
-                this.creatBlock();
-                this.loadData();
-                typeLoop = 1;
-            }
+        }
+        if (checkEndLoop2) {
+            this.creatBlock();
+            this.loadData();
+            typeLoop = 1;
         }
     }
 
@@ -136,18 +144,18 @@ export class Game extends Application {
 
         let temp = data[I][J];
         if (I >= 0 && I < Nrow - 1 && data[I][J] == data[I + 1][J]) {
-            listMove.push({ start: { x: I + 1, y: J }, end: block[I][J] });
+            listMove.push({ start: { x: I + 1, y: J }, end: { x: block[I][J].x, y: block[I][J].y } });
             temp *= 2;
             data[I + 1][J] = 0;
         }
         if (I >= 0 && J >= 1 && data[I][J] == data[I][J - 1]) {
-            listMove.push({ start: { x: I, y: J - 1 }, end: block[I][J] });
+            listMove.push({ start: { x: I, y: J - 1 }, end: { x: block[I][J].x, y: block[I][J].y } });
             temp *= 2;
             data[I][J - 1] = 0;
         }
 
         if (I >= 0 && J < Ncolum && data[I][J] == data[I][J + 1]) {
-            listMove.push({ start: { x: I, y: J + 1 }, end: block[I][J] });
+            listMove.push({ start: { x: I, y: J + 1 }, end: { x: block[I][J].x, y: block[I][J].y } });
             temp *= 2;
             data[I][J + 1] = 0;
         }
