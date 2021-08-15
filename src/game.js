@@ -23,8 +23,8 @@ let data = [
     [0, 0, 0, 0, 0],
     [0, 0, 0, 0, 0],
     [0, 0, 0, 0, 0],
-    [0, 0, 0, 0, 0],
-    [0, 0, 0, 0, 0],
+    [0, 0, 2, 0, 0],
+    [0, 2, 4, 0, 0],
     [0, 8, 2, 4, 0],
     [1, 1, 1, 1, 1]
 ]
@@ -53,7 +53,7 @@ export class Game extends Application {
         this.gameOverScene = new Scene(this.stage);
         this.gameOverScene.setVisible(false);
 
-        this.processBar = new ProcessBar(3000, blockSize);
+        this.processBar = new ProcessBar(10000, blockSize);
         this.gameScene.addChild(this.processBar);
 
         for (let j = 0; j < Ncolum; j++) {
