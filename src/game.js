@@ -1,4 +1,4 @@
-import { Application, Text, TextStyle, TextureLoader, utils } from "pixi.js";
+import { Application, Text, TextStyle, utils } from "pixi.js";
 import Scene from "./scene.js";
 import SpriteObject from "./sprite-object.js";
 import Keyboard from "./keyboard.js";
