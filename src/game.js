@@ -22,10 +22,10 @@ let blur = 0.8;
 let data = [
     [0, 0, 0, 0, 0],
     [0, 0, 2, 0, 0],
-    [0, 0, 8, 0, 0],
     [0, 0, 4, 0, 0],
-    [0, 2, 8, 0, 0],
-    [0, 8, 16, 4, 0],
+    [0, 0, 8, 0, 0],
+    [0, 0, 16, 0, 0],
+    [0, 64, 32, 64, 0],
     [1, 1, 1, 1, 1]
 ]
 
@@ -146,8 +146,9 @@ export class Game extends Application {
                 for (let k = i; k >= 1; k--) {
                     data[k][j] = data[k - 1][j];
                     listMove.push({ start: { x: k - 1, y: j }, end: { x: block[k][j].x, y: block[k][j].y } });
+                    if (k == 1)
+                        data[0][j] = 0;
                 }
-                data[0][j] = 0;
             }
 
             typeLoop = 3;
