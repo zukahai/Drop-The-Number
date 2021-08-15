@@ -12,7 +12,8 @@ let Ncolum = 5;
 let blockSize = 80;
 let XMilestones = 0;
 let YMilestones = 0;
-let speedDown = 0.3;
+let speedBlock = 0.3;
+let speedDown = speedBlock;
 let indexNewBlock = 2;
 let typeLoop = 1;
 let listMove = [];
@@ -246,6 +247,7 @@ export class Game extends Application {
     }
 
     creatBlock(x, y) {
+        speedDown = speedBlock;
         let k = 3;
         for (let i = 0; i < Nrow; i++)
             for (let j = 0; j < Ncolum; j++)
@@ -328,7 +330,7 @@ export class Game extends Application {
         });
 
         down.setPress(() => {
-            speedDown = 7;
+            speedDown = 30 * speedBlock;
         });
 
         left.setRelease(() => {
@@ -344,7 +346,7 @@ export class Game extends Application {
         });
 
         down.setRelease(() => {
-            speedDown = 0.3;
+            speedDown = speedBlock;
         });
     }
 }
