@@ -69,7 +69,7 @@ export class Game extends Application {
         }
 
         this.loadData();
-        this.creatBlock(indexNewBlock, -1);
+        this.creatBlock(indexNewBlock, -1, 2);
 
         this.message = new Text("", new TextStyle({
             fontFamily: "Arial",
@@ -178,7 +178,7 @@ export class Game extends Application {
             for (let i = 0; i < listDown2.length; i++)
                 listMove = listMove.concat(this.listMoveBlock(listDown2[i].x, listDown2[i].y));
             if (listMove.length == 0) {
-                this.creatBlock(indexNewBlock, -1);
+                this.creatBlock(indexNewBlock, -1, -1);
                 typeLoop = 1;
             } else typeLoop = 2;
         }
@@ -246,7 +246,7 @@ export class Game extends Application {
         return false;
     }
 
-    creatBlock(x, y) {
+    creatBlock(x, y, VALUE) {
         speedDown = speedBlock;
         let k = 3;
         for (let i = 0; i < Nrow; i++)
@@ -257,6 +257,8 @@ export class Game extends Application {
             k = Math.floor((k + 1) / 2);
         else k = 3;
         let value = Math.pow(2, Math.floor(Math.random() * 999) % k + 1);
+        if (VALUE > 0)
+            value = VALUE;
         this.loadData();
         if (this.newBlock != undefined)
             this.newBlock.alpha = 0;
