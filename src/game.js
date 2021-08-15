@@ -69,7 +69,7 @@ export class Game extends Application {
         }
 
         this.loadData();
-        this.creatBlock(indexNewBlock, -1, 2);
+        this.creatBlock(indexNewBlock, -1, 1);
 
         this.message = new Text("", new TextStyle({
             fontFamily: "Arial",
