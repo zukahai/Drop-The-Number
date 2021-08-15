@@ -256,9 +256,9 @@ export class Game extends Application {
         if (k > 6)
             k = Math.floor((k + 1) / 2);
         else k = 3;
-        let value = Math.pow(2, Math.floor(Math.random() * 999) % k + 1);
         if (VALUE > 0)
-            value = VALUE;
+            k = VALUE;
+        let value = Math.pow(2, Math.floor(Math.random() * 999) % k + 1);
         this.loadData();
         if (this.newBlock != undefined)
             this.newBlock.alpha = 0;
