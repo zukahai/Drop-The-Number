@@ -134,7 +134,7 @@
         "version": "1.0",
         "image": "block.png",
         "format": "RGBA8888",
-        "size": { "w": 400, "h": 400 },
+        "size": { "w": 400, "h": 500 },
         "scale": "1",
         "smartupdate": "$TexturePacker:SmartUpdate:b92d870f654fe9ee1359c425f4ba9864:3923663e59fb40b578d66a492a2cda2d:9995f8b4db1ac3cb75651b1542df8ee2$"
     }
