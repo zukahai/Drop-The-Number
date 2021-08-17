@@ -3,6 +3,8 @@ import Scene from "./scene.js";
 import SpriteObject from "./sprite-object.js";
 import Keyboard from "./keyboard.js";
 import ProcessBar from "./ProcessBar.js";
+import * as level_game from '../dist/levels/level_1.json';
+import * as level_game2 from '../dist/levels/level_2.json';
 
 const TextureCache = utils.TextureCache;
 
@@ -20,15 +22,7 @@ let listMove = [];
 let listDown = [];
 let blur = 0.8;
 
-let data = [
-    [0, 0, 0, 0, 0],
-    [0, 0, 2, 0, 0],
-    [0, 0, 4, 0, 0],
-    [0, 0, 8, 0, 0],
-    [0, 0, 16, 0, 0],
-    [0, 64, 32, 64, 0],
-    [1, 1, 1, 1, 1]
-]
+let data = []
 
 export class Game extends Application {
     constructor() {
@@ -49,13 +43,13 @@ export class Game extends Application {
     }
 
     setup() {
+        console.log(level_game.target);
         this.gameScene = new Scene(this.stage);
 
         this.gameOverScene = new Scene(this.stage);
         this.gameOverScene.setVisible(false);
 
-        this.processBar = new ProcessBar(10000, blockSize);
-        this.gameScene.addChild(this.processBar);
+        this.loadLevel();
 
         for (let j = 0; j < Ncolum; j++) {
             let t = new SpriteObject(
@@ -69,6 +63,7 @@ export class Game extends Application {
         }
 
         this.loadData();
+
         this.createBlock(indexNewBlock, -1, 1);
 
         this.message = new Text("", new TextStyle({
@@ -89,6 +84,12 @@ export class Game extends Application {
 
         this.setupController();
         this.ticker.add((delta) => this.loop(delta));
+    }
+
+    loadLevel() {
+        this.processBar = new ProcessBar(level_game2.target, blockSize);
+        this.gameScene.addChild(this.processBar);
+        data = level_game2.data;
     }
 
     loop(delta) {
