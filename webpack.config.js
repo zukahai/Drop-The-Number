@@ -21,4 +21,11 @@ module.exports = {
             ],
         }),
     ],
+    plugins: [
+        new CopyPlugin({
+            patterns: [
+                { from: "assets/level", to: "level" },
+            ],
+        }),
+    ],
 };
