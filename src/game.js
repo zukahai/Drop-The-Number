@@ -3,8 +3,10 @@ import Scene from "./scene.js";
 import SpriteObject from "./sprite-object.js";
 import Keyboard from "./keyboard.js";
 import ProcessBar from "./ProcessBar.js";
+
 import * as level_game from '../dist/levels/level_1.json';
 import * as level_game2 from '../dist/levels/level_2.json';
+import * as level_game3 from '../dist/levels/level_3.json';
 
 const TextureCache = utils.TextureCache;
 
@@ -21,6 +23,8 @@ let typeLoop = 1;
 let listMove = [];
 let listDown = [];
 let blur = 0.8;
+let level = 1;
+let Nlevel = 3;
 
 let data = []
 
@@ -43,13 +47,12 @@ export class Game extends Application {
     }
 
     setup() {
-        console.log(level_game.target);
         this.gameScene = new Scene(this.stage);
 
         this.gameOverScene = new Scene(this.stage);
         this.gameOverScene.setVisible(false);
 
-        this.loadLevel();
+        this.loadLevel(level);
 
         for (let j = 0; j < Ncolum; j++) {
             let t = new SpriteObject(
@@ -86,10 +89,26 @@ export class Game extends Application {
         this.ticker.add((delta) => this.loop(delta));
     }
 
-    loadLevel() {
-        this.processBar = new ProcessBar(level_game2.target, blockSize);
-        this.gameScene.addChild(this.processBar);
-        data = level_game2.data;
+    loadLevel(lv) {
+        switch (lv) {
+            case 1:
+                this.processBar = new ProcessBar(level_game.target, blockSize);
+                this.gameScene.addChild(this.processBar);
+                data = level_game.data;
+                break;
+            case 2:
+                this.processBar = new ProcessBar(level_game2.target, blockSize);
+                this.gameScene.addChild(this.processBar);
+                data = level_game2.data;
+                break;
+            case 3:
+                this.processBar = new ProcessBar(level_game3.target, blockSize);
+                this.gameScene.addChild(this.processBar);
+                data = level_game3.data;
+                break;
+        }
+        indexNewBlock = 2;
+        this.createBlock(indexNewBlock, -1, 1);
     }
 
     loop(delta) {
@@ -100,12 +119,22 @@ export class Game extends Application {
         } else if (typeLoop == 3) {
             this.loopType3();
         }
+
+        if (this.processBar.score >= this.processBar.targetScore) {
+            if (level == Nlevel) {
+                this.end();
+                this.message.text = "You win!";
+                this.ticker.stop();
+            } else {
+                this.loadLevel(++level);
+                typeLoop = 1;
+            }
+        }
     }
 
     loopType1() {
         this.newBlock.y += speedDown;
         if (this.checkLost()) {
-            console.log(data);
             this.end();
             this.message.text = "You lost!";
             this.ticker.stop();
@@ -114,8 +143,8 @@ export class Game extends Application {
             data[Math.floor((this.newBlock.y - YMilestones + 0.5 * blockSize) / blockSize)][Math.floor((this.newBlock.x - XMilestones + 0.5 * blockSize) / blockSize)] = this.newBlock.value;
             indexNewBlock = Math.floor((this.newBlock.x - XMilestones + 0.5 * blockSize) / blockSize);
             this.newBlock.alpha = 0;
-            listMove = this.listMoveBlock(Math.floor((this.newBlock.y - YMilestones + 0.5 * blockSize) / blockSize), Math.floor((this.newBlock.x - XMilestones + 0.5 * blockSize) / blockSize));
             typeLoop = 2;
+            listMove = this.listMoveBlock(Math.floor((this.newBlock.y - YMilestones + 0.5 * blockSize) / blockSize), Math.floor((this.newBlock.x - XMilestones + 0.5 * blockSize) / blockSize));
         }
     }
 
@@ -219,14 +248,6 @@ export class Game extends Application {
             block[I][J + 1].alpha = blur;
         }
 
-        if (this.processBar.score < this.processBar.targetScore)
-            this.processBar.update((temp == data[I][J]) ? 0 : temp);
-        else {
-            this.end();
-            this.message.text = "You win!";
-            this.ticker.stop();
-        }
-
         if (data[I][J] != temp && data[I + 1][J] != 0) {
             let check = true;
             for (let i = 0; i < listDown.length; i++)
@@ -235,6 +256,9 @@ export class Game extends Application {
             if (check)
                 listDown.push({ x: I, y: J });
         }
+
+        if (this.processBar.score < this.processBar.targetScore)
+            this.processBar.update((temp == data[I][J]) ? 0 : temp);
 
         data[I][J] = temp;
         return listMove2;
