@@ -20,11 +20,10 @@ module.exports = {
                 { from: "assets/images", to: "images" },
             ],
         }),
-    ],
-    plugins: [
+
         new CopyPlugin({
             patterns: [
-                { from: "assets/level", to: "level" },
+                { from: "assets/levels", to: "levels" },
             ],
         }),
     ],
