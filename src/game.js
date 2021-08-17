@@ -7,6 +7,7 @@ import ProcessBar from "./ProcessBar.js";
 import * as level_game from '../dist/levels/level_1.json';
 import * as level_game2 from '../dist/levels/level_2.json';
 import * as level_game3 from '../dist/levels/level_3.json';
+import * as level_game4 from '../dist/levels/level_4.json';
 
 const TextureCache = utils.TextureCache;
 
@@ -105,6 +106,11 @@ export class Game extends Application {
                 this.processBar = new ProcessBar(level_game3.target, blockSize);
                 this.gameScene.addChild(this.processBar);
                 data = level_game3.data;
+                break;
+            case 4:
+                this.processBar = new ProcessBar(level_game4.target, blockSize);
+                this.gameScene.addChild(this.processBar);
+                data = level_game4.data;
                 break;
         }
         indexNewBlock = 2;
