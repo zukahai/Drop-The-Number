@@ -122,6 +122,7 @@ export class Game extends Application {
         let checkEndLoop2 = false;
         if (listMove.length == 0)
             checkEndLoop2 = true;
+
         for (let i = 0; i < listMove.length; i++) {
             if (Math.abs(block[listMove[i].start.x][listMove[i].start.y].x - listMove[i].end.x) > 0.01 || Math.abs(block[listMove[i].start.x][listMove[i].start.y].y - listMove[i].end.y) > 0.01) {
                 block[listMove[i].start.x][listMove[i].start.y].x = (block[listMove[i].start.x][listMove[i].start.y].x + listMove[i].end.x) / 2;
@@ -131,8 +132,6 @@ export class Game extends Application {
                 break;
             }
         }
-
-
 
         if (checkEndLoop2) {
             this.loadData();
@@ -170,6 +169,7 @@ export class Game extends Application {
                 break;
             }
         }
+
         if (checkEndLoop3) {
             this.loadData();
             listMove = [];
