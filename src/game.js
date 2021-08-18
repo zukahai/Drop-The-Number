@@ -52,10 +52,14 @@ export class Game extends Application {
 
         this.loadLevel(level);
 
+        this.processBar = new ProcessBar(level_game.level1.target, blockSize);
+        this.gameScene.addChild(this.processBar);
+        data = level_game.level1.data;
+
         this.level_text = new Text("Level 1", new TextStyle({
             fontFamily: "Arial",
             fontSize: blockSize * 0.4,
-            fill: "#00FFFF",
+            fill: "#FFFF00",
             stroke: '#ff3300',
             strokeThickness: 4
         }));
@@ -103,22 +107,18 @@ export class Game extends Application {
         switch (lv) {
             case 1:
                 this.processBar = new ProcessBar(level_game.level1.target, blockSize);
-                this.gameScene.addChild(this.processBar);
                 data = level_game.level1.data;
                 break;
             case 2:
                 this.processBar = new ProcessBar(level_game.level2.target, blockSize);
-                this.gameScene.addChild(this.processBar);
                 data = level_game.level2.data;
                 break;
             case 3:
                 this.processBar = new ProcessBar(level_game.level3.target, blockSize);
-                this.gameScene.addChild(this.processBar);
                 data = level_game.level3.data;
                 break;
             case 4:
                 this.processBar = new ProcessBar(level_game.level4.target, blockSize);
-                this.gameScene.addChild(this.processBar);
                 data = level_game.level4.data;
                 break;
         }
