@@ -44,7 +44,7 @@ export default class ProcessBar extends Container {
     }
 
     update(score) {
-        this.message.x = (5.4 * this.blockSize - this.message.fontSize / 2) / 2;
+        this.message.x = (5.4 * this.blockSize - this.message.text.length * this.blockSize / 8) / 2;
         this.score += score;
         if (this.score > this.targetScore)
             this.score = this.targetScore;

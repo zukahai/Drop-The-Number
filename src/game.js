@@ -61,7 +61,12 @@ export class Game extends Application {
             fontSize: blockSize * 0.4,
             fill: "#FFFF00",
             stroke: '#ff3300',
-            strokeThickness: 4
+            strokeThickness: 4,
+            dropShadow: true,
+            dropShadowColor: "#000000",
+            dropShadowBlur: 4,
+            dropShadowAngle: Math.PI / 6,
+            dropShadowDistance: 6,
         }));
 
         this.level_text.x = 2 * blockSize;
