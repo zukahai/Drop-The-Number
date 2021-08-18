@@ -46,7 +46,7 @@ export default class ProcessBar extends Container {
         this.score += score;
         if (this.score > this.targetScore)
             this.score = this.targetScore;
-        this.message.text = this.score + " /" + this.targetScore;
+        this.message.text = this.score + " / " + this.targetScore;
         this.processBar.beginFill(0x00FF00);
         this.processBar.drawRect(0.3 * this.blockSize, 0.7 * this.blockSize, (this.score / this.targetScore) * 4.8 * this.blockSize, this.blockSize / 3, 10);
     }
