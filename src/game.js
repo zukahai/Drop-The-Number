@@ -22,7 +22,7 @@ let listMove = [];
 let listDown = [];
 let blur = 0.8;
 let level = 1;
-let Nlevel = 3;
+let Nlevel = Object.keys(level_game).length - 1;
 
 let data = []
 
@@ -45,6 +45,7 @@ export class Game extends Application {
     }
 
     setup() {
+        console.log(Nlevel);
         this.gameScene = new Scene(this.stage);
 
         this.gameOverScene = new Scene(this.stage);
@@ -121,6 +122,10 @@ export class Game extends Application {
             case 4:
                 this.processBar = new ProcessBar(level_game.level4.target, blockSize);
                 data = level_game.level4.data;
+                break;
+            case 5:
+                this.processBar = new ProcessBar(level_game.level5.target, blockSize);
+                data = level_game.level5.data;
                 break;
         }
 
