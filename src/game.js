@@ -50,10 +50,9 @@ export class Game extends Application {
         this.gameOverScene = new Scene(this.stage);
         this.gameOverScene.setVisible(false);
 
-        this.loadLevel(level);
-
         this.processBar = new ProcessBar(level_game.level1.target, blockSize);
         this.gameScene.addChild(this.processBar);
+
         data = level_game.level1.data;
 
         this.level_text = new Text("Level 1", new TextStyle({
@@ -67,6 +66,8 @@ export class Game extends Application {
         this.level_text.x = 2 * blockSize;
         this.level_text.y = 0.1 * blockSize;
         this.gameScene.addChild(this.level_text);
+
+        this.loadLevel(level);
 
         for (let j = 0; j < Ncolum; j++) {
             let t = new SpriteObject(
@@ -122,6 +123,10 @@ export class Game extends Application {
                 data = level_game.level4.data;
                 break;
         }
+
+        this.gameScene.addChild(this.processBar);
+        this.gameScene.addChild(this.level_text);
+
         indexNewBlock = 2;
         this.createBlock(indexNewBlock, -1, 1);
     }
@@ -136,6 +141,7 @@ export class Game extends Application {
         }
 
         if (this.processBar.score >= this.processBar.targetScore) {
+            console.log("Next level");
             if (level == Nlevel) {
                 this.end();
                 this.message.text = "You win!";
