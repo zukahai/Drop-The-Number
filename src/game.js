@@ -148,6 +148,8 @@ export class Game extends Application {
             this.loopType2();
         } else if (typeLoop == 3) {
             this.loopType3();
+        } else if (typeLoop == 4) {
+            this.loopType4();
         }
 
         if (this.processBar.score >= this.processBar.targetScore) {
@@ -157,10 +159,42 @@ export class Game extends Application {
                 this.message.text = "You win!";
                 this.ticker.stop();
             } else {
-                this.loadLevel(++level);
-                this.level_text.text = "Level " + level;
-                typeLoop = 1;
+                listMove = [];
+                for (let i = 0; i < Nrow; i++)
+                    for (let j = 0; j < Ncolum; j++)
+                        listMove.push({ start: { x: i, y: j }, end: { x: XMilestones + j * blockSize, y: -2 * blockSize } });
+                typeLoop = 4;
             }
+        }
+    }
+
+    loopType4() {
+        let checkEndLoop4 = false;
+
+        if (listMove.length == 0)
+            checkEndLoop4 = true;
+
+        for (let i = 0; i < listMove.length; i++) {
+            let x = listMove[i].end.x;
+            let y = listMove[i].end.y;
+            if (Math.abs(block[listMove[i].start.x][listMove[i].start.y].x - listMove[i].end.x) > blockSize / 5 || Math.abs(block[listMove[i].start.x][listMove[i].start.y].y - listMove[i].end.y) > blockSize / 5) {
+                for (let k = 0; k < 5; k++) {
+                    x = (block[listMove[i].start.x][listMove[i].start.y].x + x) / 2;
+                    y = (block[listMove[i].start.x][listMove[i].start.y].y + y) / 2;
+                }
+                block[listMove[i].start.x][listMove[i].start.y].x = x;
+                block[listMove[i].start.x][listMove[i].start.y].y = y;
+            } else {
+                checkEndLoop4 = true;
+                break;
+            }
+        }
+
+        if (checkEndLoop4) {
+
+            this.loadLevel(++level);
+            this.level_text.text = "Level " + level;
+            typeLoop = 1;
         }
     }
 
