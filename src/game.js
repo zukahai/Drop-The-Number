@@ -4,10 +4,7 @@ import SpriteObject from "./sprite-object.js";
 import Keyboard from "./keyboard.js";
 import ProcessBar from "./ProcessBar.js";
 
-import * as level_game from '../dist/levels/level_1.json';
-import * as level_game2 from '../dist/levels/level_2.json';
-import * as level_game3 from '../dist/levels/level_3.json';
-import * as level_game4 from '../dist/levels/level_4.json';
+import * as level_game from '../dist/levels/level.json';
 
 const TextureCache = utils.TextureCache;
 
@@ -93,24 +90,24 @@ export class Game extends Application {
     loadLevel(lv) {
         switch (lv) {
             case 1:
-                this.processBar = new ProcessBar(level_game.target, blockSize);
+                this.processBar = new ProcessBar(level_game.level1.target, blockSize);
                 this.gameScene.addChild(this.processBar);
-                data = level_game.data;
+                data = level_game.level1.data;
                 break;
             case 2:
-                this.processBar = new ProcessBar(level_game2.target, blockSize);
+                this.processBar = new ProcessBar(level_game.level2.target, blockSize);
                 this.gameScene.addChild(this.processBar);
-                data = level_game2.data;
+                data = level_game.level2.data;
                 break;
             case 3:
-                this.processBar = new ProcessBar(level_game3.target, blockSize);
+                this.processBar = new ProcessBar(level_game.level3.target, blockSize);
                 this.gameScene.addChild(this.processBar);
-                data = level_game3.data;
+                data = level_game.level3.data;
                 break;
             case 4:
-                this.processBar = new ProcessBar(level_game4.target, blockSize);
+                this.processBar = new ProcessBar(level_game.level4.target, blockSize);
                 this.gameScene.addChild(this.processBar);
-                data = level_game4.data;
+                data = level_game.level4.data;
                 break;
         }
         indexNewBlock = 2;
