@@ -29,9 +29,9 @@ let data = []
 export class Game extends Application {
     constructor() {
         blockSize = Math.min(document.documentElement.clientWidth / (Ncolum + 1), document.documentElement.clientHeight / (Nrow + 3));
-        YMilestones = 1.7 * blockSize;
+        YMilestones = 2.2 * blockSize;
         XMilestones = 0.2 * blockSize;
-        super({ width: (Ncolum + 0.4) * blockSize, height: (Nrow + 2) * blockSize });
+        super({ width: (Ncolum + 0.4) * blockSize, height: (Nrow + 2.5) * blockSize });
         this.renderer.view.style.position = "absolute";
         this.renderer.view.style.top = "50%";
         this.renderer.view.style.left = "50%";
@@ -51,6 +51,18 @@ export class Game extends Application {
         this.gameOverScene.setVisible(false);
 
         this.loadLevel(level);
+
+        this.level_text = new Text("Level 1", new TextStyle({
+            fontFamily: "Arial",
+            fontSize: blockSize * 0.4,
+            fill: "#00FFFF",
+            stroke: '#ff3300',
+            strokeThickness: 4
+        }));
+
+        this.level_text.x = 2 * blockSize;
+        this.level_text.y = 0.1 * blockSize;
+        this.gameScene.addChild(this.level_text);
 
         for (let j = 0; j < Ncolum; j++) {
             let t = new SpriteObject(
@@ -130,6 +142,7 @@ export class Game extends Application {
                 this.ticker.stop();
             } else {
                 this.loadLevel(++level);
+                this.level_text.text = "Level " + level;
                 typeLoop = 1;
             }
         }
