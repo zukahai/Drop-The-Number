@@ -3,7 +3,7 @@ import Scene from "./scene.js";
 import SpriteObject from "./sprite-object.js";
 import Keyboard from "./keyboard.js";
 import ProcessBar from "./ProcessBar.js";
-import ActionManager from "./touch.js";
+import TouchListener from "./touch.js";
 
 import * as level_game from '../dist/levels/level.json';
 
@@ -109,7 +109,7 @@ export class Game extends Application {
 
         this.setupController();
         this.ticker.add((delta) => this.loop(delta));
-        this.actionManager = new ActionManager(this.view, true);
+        this.touchListener = new TouchListener(this.view, true);
     }
 
     loadLevel(lv) {
@@ -167,6 +167,10 @@ export class Game extends Application {
                         listMove.push({ start: { x: i, y: j }, end: { x: XMilestones + j * blockSize, y: -2 * blockSize } });
                 typeLoop = 4;
             }
+        }
+
+        if (typeLoop == 1 && this.touchListener.ponit.x >= XMilestones && this.touchListener.ponit.x <= XMilestones + Ncolum * blockSize) {
+            this.newBlock.x = XMilestones + Math.floor((this.touchListener.ponit.x - XMilestones) / blockSize) * blockSize;
         }
     }
 
