@@ -170,7 +170,10 @@ export class Game extends Application {
         }
 
         if (typeLoop == 1 && this.touchListener.ponit.x >= XMilestones && this.touchListener.ponit.x <= XMilestones + Ncolum * blockSize) {
-            this.newBlock.x = XMilestones + Math.floor((this.touchListener.ponit.x - XMilestones) / blockSize) * blockSize;
+            if ((this.newBlock.x + blockSize / 2) - (this.touchListener.ponit.x) > blockSize)
+                this.moveBlock(-1);
+            else if ((this.newBlock.x + blockSize / 2) - (this.touchListener.ponit.x) < -blockSize)
+                this.moveBlock(1);
         }
     }
 
