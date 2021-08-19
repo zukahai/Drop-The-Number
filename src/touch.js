@@ -48,12 +48,18 @@ export default class TouchListener {
                 let x = 0,
                     y = 0;
                 e.clientX;
-                if (e.type == "touchstart" || e.type == "touchmove" || e.type == "touchend") {
+                if (e.type == "touchstart" || e.type == "touchend") {
                     var touch = e.touches[0] || e.changedTouches[0];
                     let rect = e.target.getBoundingClientRect();
                     x = parseInt(touch.pageX - rect.left);
                     y = parseInt(touch.pageY - rect.top);
-                    this.ponit = { x, y };
+                    this.ponit = { x, y, z: 1 };
+                } else if (e.type == "touchmove") {
+                    var touch = e.touches[0] || e.changedTouches[0];
+                    let rect = e.target.getBoundingClientRect();
+                    x = parseInt(touch.pageX - rect.left);
+                    y = parseInt(touch.pageY - rect.top);
+                    this.ponit = { x, y, z: 30 };
                 }
             }
         });
