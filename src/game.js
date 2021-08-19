@@ -38,6 +38,7 @@ export class Game extends Application {
         this.renderer.view.style.left = "50%";
         this.renderer.view.style.transform = "translate(-50%,-50%)";
         document.body.appendChild(this.view);
+        speedBlock = blockSize / 200;
     }
 
     load() {
@@ -88,7 +89,7 @@ export class Game extends Application {
         }
 
         this.loadData();
-
+        this.touchListener = new TouchListener(this.view, true);
         this.createBlock(indexNewBlock, -1, 1);
 
         this.message = new Text("", new TextStyle({
@@ -109,7 +110,6 @@ export class Game extends Application {
 
         this.setupController();
         this.ticker.add((delta) => this.loop(delta));
-        this.touchListener = new TouchListener(this.view, true);
     }
 
     loadLevel(lv) {
@@ -350,6 +350,8 @@ export class Game extends Application {
 
     createBlock(x, y, VALUE) {
         speedDown = speedBlock;
+        if (this.touchListener != undefined)
+            this.touchListener.ponit.z = 1;
         let k = 3;
         for (let i = 0; i < Nrow; i++)
             for (let j = 0; j < Ncolum; j++)
