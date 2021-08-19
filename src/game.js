@@ -3,6 +3,7 @@ import Scene from "./scene.js";
 import SpriteObject from "./sprite-object.js";
 import Keyboard from "./keyboard.js";
 import ProcessBar from "./ProcessBar.js";
+import ActionManager from "./touch.js";
 
 import * as level_game from '../dist/levels/level.json';
 
@@ -108,6 +109,7 @@ export class Game extends Application {
 
         this.setupController();
         this.ticker.add((delta) => this.loop(delta));
+        this.actionManager = new ActionManager(this.view, true);
     }
 
     loadLevel(lv) {
