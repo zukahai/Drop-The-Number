@@ -11,6 +11,7 @@
     "author": "HaiZuka",
     "license": "ISC",
     "dependencies": {
+        "pixi-particles": "^4.3.1",
         "pixi.js": "^6.1.1"
     },
     "devDependencies": {

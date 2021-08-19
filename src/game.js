@@ -174,8 +174,7 @@ export class Game extends Application {
                 this.moveBlock(-1);
             else if ((this.newBlock.x + blockSize / 2) - (this.touchListener.ponit.x) < -blockSize / 2)
                 this.moveBlock(1);
-            if (this.touchListener.ponit.y > this.newBlock.y)
-                speedDown = this.touchListener.ponit.z * speedBlock;
+            speedDown = this.touchListener.ponit.z * speedBlock;
         }
     }
 
