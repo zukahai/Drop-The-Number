@@ -4,6 +4,7 @@ import SpriteObject from "./sprite-object.js";
 import Keyboard from "./ActionManager/keyboard.js";
 import ProcessBar from "./ProcessBar.js";
 import TouchListener from "./ActionManager/touch.js";
+import Level from "./LevelManager/level.js";
 
 import * as level_game from '../dist/levels/level.json';
 
@@ -47,7 +48,7 @@ export class Game extends Application {
     }
 
     setup() {
-        console.log(Nlevel);
+        this.Level = new Level(level_game);
         this.gameScene = new Scene(this.stage);
 
         this.gameOverScene = new Scene(this.stage);
@@ -113,28 +114,9 @@ export class Game extends Application {
     }
 
     loadLevel(lv) {
-        switch (lv) {
-            case 1:
-                this.processBar = new ProcessBar(level_game.level1.target, blockSize);
-                data = level_game.level1.data;
-                break;
-            case 2:
-                this.processBar = new ProcessBar(level_game.level2.target, blockSize);
-                data = level_game.level2.data;
-                break;
-            case 3:
-                this.processBar = new ProcessBar(level_game.level3.target, blockSize);
-                data = level_game.level3.data;
-                break;
-            case 4:
-                this.processBar = new ProcessBar(level_game.level4.target, blockSize);
-                data = level_game.level4.data;
-                break;
-            case 5:
-                this.processBar = new ProcessBar(level_game.level5.target, blockSize);
-                data = level_game.level5.data;
-                break;
-        }
+
+        this.processBar = new ProcessBar(this.Level.getTarget(lv), blockSize);
+        data = this.Level.getData(lv)
 
         this.gameScene.addChild(this.processBar);
         this.gameScene.addChild(this.level_text);
