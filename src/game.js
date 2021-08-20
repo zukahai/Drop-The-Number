@@ -1,9 +1,9 @@
 import { Application, Text, TextStyle, utils } from "pixi.js";
 import Scene from "./scene.js";
 import SpriteObject from "./sprite-object.js";
-import Keyboard from "./keyboard.js";
+import Keyboard from "./ActionManager/keyboard.js";
 import ProcessBar from "./ProcessBar.js";
-import TouchListener from "./touch.js";
+import TouchListener from "./ActionManager/touch.js";
 
 import * as level_game from '../dist/levels/level.json';
 
