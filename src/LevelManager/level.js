@@ -22,4 +22,11 @@ export default class Level {
     getData(lv) {
         return this.lv[lv - 1].data;
     }
+
+    getScore(lv) {
+        let score = 0;
+        for (let i = 0; i < lv - 1; i++)
+            score += this.lv[i].target;
+        return score;
+    }
 }
