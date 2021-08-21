@@ -1,16 +1,16 @@
-import {Container } from 'pixi.js';
+import { Container } from 'pixi.js';
 
 export default class Scene extends Container {
-    constructor(stage){
+    constructor(stage) {
         super();
         stage.addChild(this);
     }
 
-    setVisible(visible){
+    setVisible(visible) {
         this.visible = visible;
     }
 
-    addChild(child){
+    addChild(child) {
         super.addChild(child);
     }
 }
