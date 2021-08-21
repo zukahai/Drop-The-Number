@@ -2,7 +2,7 @@ import { Application, Text, TextStyle, utils } from "pixi.js";
 import Scene from "./scene.js";
 import SpriteObject from "./sprite-object.js";
 import Keyboard from "./ActionManager/keyboard.js";
-import ProcessBar from "./ProcessBar.js";
+import ProcessBar from "./ProcessManager/ProcessBar.js";
 import TouchListener from "./ActionManager/touch.js";
 import Level from "./LevelManager/level.js";
 
