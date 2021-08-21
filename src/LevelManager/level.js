@@ -2,6 +2,7 @@ import LevelLoader from "./LevelLoader";
 
 export default class Level {
     constructor() {
+        this.level = 1;
         this.init();
     }
 
@@ -28,5 +29,10 @@ export default class Level {
 
     getNumberOfLevel() {
         return this.Nlevel;
+    }
+
+    nextLevel() {
+        this.level++;
+        return this.level;
     }
 }
