@@ -2,20 +2,13 @@ import LevelLoader from "./LevelLoader";
 
 export default class Level {
     constructor() {
-        this.levelLoader = new LevelLoader();
-        this.JsonData = this.levelLoader.json;
-        this.lv = [];
         this.init();
     }
 
     init() {
-        this.Nlevel = Object.keys(this.JsonData).length - 1;
-        this.lv.push({ target: this.JsonData.level1.target, data: this.JsonData.level1.data });
-        this.lv.push({ target: this.JsonData.level2.target, data: this.JsonData.level2.data });
-        this.lv.push({ target: this.JsonData.level3.target, data: this.JsonData.level3.data });
-        this.lv.push({ target: this.JsonData.level4.target, data: this.JsonData.level4.data });
-        this.lv.push({ target: this.JsonData.level5.target, data: this.JsonData.level5.data });
-        this.lv.push({ target: this.JsonData.level6.target, data: this.JsonData.level6.data });
+        this.Nlevel = 6;
+        this.levelLoader = new LevelLoader();
+        this.lv = this.levelLoader.getLevel();
     }
 
     getTarget(lv) {
