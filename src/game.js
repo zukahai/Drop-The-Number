@@ -1,5 +1,5 @@
 import { Application, Text, TextStyle, utils } from "pixi.js";
-import Scene from "./scene.js";
+import Scene from "./SceneManager/scene.js";
 import SpriteObject from "./sprite-object.js";
 import Keyboard from "./ActionManager/keyboard.js";
 import ProcessBar from "./ProcessManager/ProcessBar.js";
