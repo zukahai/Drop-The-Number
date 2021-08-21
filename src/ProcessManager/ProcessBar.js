@@ -1,4 +1,5 @@
 import { Container, Graphics, Text, TextStyle } from 'pixi.js'
+import backgroundProcess from './backgroundProcess';
 
 
 export default class ProcessBar extends Container {
@@ -8,11 +9,7 @@ export default class ProcessBar extends Container {
         this.blockSize = blockSize;
         this.score = Level.getScore();
 
-        this.background = new Graphics();
-        this.background.lineStyle(this.blockSize / 20, 0xFF00FF, 0);
-        this.background.beginFill(0x00FFCC);
-        this.background.drawRect(0.2 * this.blockSize, 0.1 * this.blockSize, 5 * this.blockSize, 1 * this.blockSize, 10)
-        this.background.endFill();
+        this.background = new backgroundProcess(blockSize);
         this.addChild(this.background);
 
         this.roundBox = new Graphics();
