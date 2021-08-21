@@ -9,7 +9,7 @@ export default class ProcessBar extends Container {
         this.blockSize = blockSize;
         this.score = Level.getScore();
 
-        this.background = new backgroundProcess(blockSize);
+        this.background = new backgroundProcess(this.blockSize);
         this.addChild(this.background);
 
         this.roundBox = new Graphics();

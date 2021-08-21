@@ -53,24 +53,6 @@ export class Game extends Application {
         this.processBar = new ProcessBar(this.Level, blockSize);
         this.gameScene.addChild(this.processBar);
 
-
-        this.level_text = new Text("Level 1", new TextStyle({
-            fontFamily: "Arial",
-            fontSize: blockSize * 0.4,
-            fill: "#FFFF00",
-            stroke: '#ff3300',
-            strokeThickness: 4,
-            dropShadow: true,
-            dropShadowColor: "#000000",
-            dropShadowBlur: 4,
-            dropShadowAngle: Math.PI / 6,
-            dropShadowDistance: 6,
-        }));
-
-        this.level_text.x = 2 * blockSize;
-        this.level_text.y = 0.1 * blockSize;
-        this.gameScene.addChild(this.level_text);
-
         this.loadLevel(this.Level.currentLevel);
 
         for (let j = 0; j < Ncolum; j++) {
@@ -114,7 +96,6 @@ export class Game extends Application {
         data = this.Level.getData(lv)
 
         this.gameScene.addChild(this.processBar);
-        this.gameScene.addChild(this.level_text);
 
         indexNewBlock = 2;
         this.createBlock(indexNewBlock, -1, 1);
@@ -132,7 +113,6 @@ export class Game extends Application {
         }
 
         if (this.processBar.score >= this.processBar.targetScore) {
-            console.log("Next level");
             if (this.Level.currentLevel == this.Level.getNumberOfLevel()) {
                 this.end();
                 this.message.text = "You win!";
@@ -179,7 +159,7 @@ export class Game extends Application {
 
         if (checkEndLoop4) {
             this.loadLevel(this.Level.nextLevel());
-            this.level_text.text = "Level " + this.Level.currentLevel;
+            this.processBar.background.level_Text.setText("Level " + this.Level.currentLevel);
             typeLoop = 1;
         }
     }

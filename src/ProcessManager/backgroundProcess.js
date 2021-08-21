@@ -1,4 +1,5 @@
-import { Container, Graphics, Text, TextStyle } from 'pixi.js'
+import { Container, Graphics, Text, TextStyle } from 'pixi.js';
+import TextLevel from "./TextLevel.js";
 
 
 export default class backgroundProcess extends Container {
@@ -11,5 +12,8 @@ export default class backgroundProcess extends Container {
         this.background.drawRect(0.2 * this.blockSize, 0.1 * this.blockSize, 5 * this.blockSize, 1 * this.blockSize, 10)
         this.background.endFill();
         this.addChild(this.background);
+
+        this.level_Text = new TextLevel(this.blockSize);
+        this.addChild(this.level_Text);
     }
 }
