@@ -71,7 +71,7 @@ export class Game extends Application {
         this.level_text.y = 0.1 * blockSize;
         this.gameScene.addChild(this.level_text);
 
-        this.loadLevel(this.Level.level);
+        this.loadLevel(this.Level.currentLevel);
 
         for (let j = 0; j < Ncolum; j++) {
             let t = new SpriteObject(
@@ -133,7 +133,7 @@ export class Game extends Application {
 
         if (this.processBar.score >= this.processBar.targetScore) {
             console.log("Next level");
-            if (this.Level.level == this.Level.getNumberOfLevel()) {
+            if (this.Level.currentLevel == this.Level.getNumberOfLevel()) {
                 this.end();
                 this.message.text = "You win!";
                 this.ticker.stop();
@@ -179,7 +179,7 @@ export class Game extends Application {
 
         if (checkEndLoop4) {
             this.loadLevel(this.Level.nextLevel());
-            this.level_text.text = "Level " + this.Level.level;
+            this.level_text.text = "Level " + this.Level.currentLevel;
             typeLoop = 1;
         }
     }

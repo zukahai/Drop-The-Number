@@ -2,7 +2,7 @@ import LevelLoader from "./LevelLoader";
 
 export default class Level {
     constructor() {
-        this.level = 1;
+        this.currentLevel = 1;
         this.init();
     }
 
@@ -32,7 +32,7 @@ export default class Level {
     }
 
     nextLevel() {
-        this.level++;
-        return this.level;
+        this.currentLevel++;
+        return this.currentLevel;
     }
 }
