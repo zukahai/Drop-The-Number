@@ -1,10 +1,11 @@
 import { Application, Text, TextStyle, utils } from "pixi.js";
-import Scene from "./SceneManager/scene.js";
 import SpriteObject from "./sprite-object.js";
 import Keyboard from "./ActionManager/keyboard.js";
 import ProcessBar from "./ProcessManager/ProcessBar.js";
 import TouchListener from "./ActionManager/touch.js";
 import Level from "./LevelManager/level.js";
+import gameScene from "./SceneManager/gameScene.js";
+import gameOverScene from "./SceneManager/gameOverScene.js";
 
 const TextureCache = utils.TextureCache;
 
@@ -45,19 +46,18 @@ export class Game extends Application {
 
     setup() {
         this.Level = new Level();
-        this.gameScene = new Scene(this.stage);
+        this.gameScene = new gameScene(this.stage)
 
-        this.gameOverScene = new Scene(this.stage);
-        this.gameOverScene.setVisible(false);
+        this.gameOverScene = new gameOverScene(this.stage);
 
         this.processBar = new ProcessBar(this.Level, blockSize);
-        this.gameScene.addChild(this.processBar);
+        this.gameScene.scene.addChild(this.processBar);
 
         this.loadLevel(this.Level.currentLevel);
 
         for (let j = 0; j < Ncolum; j++) {
             let t = new SpriteObject(
-                this.gameScene,
+                this.gameScene.scene,
                 TextureCache["head.png"],
                 j * blockSize + XMilestones,
                 YMilestones - blockSize
@@ -70,22 +70,6 @@ export class Game extends Application {
         this.touchListener = new TouchListener(this.view, true);
         this.createBlock(indexNewBlock, -1, 1);
 
-        this.message = new Text("", new TextStyle({
-            fontFamily: "Arial",
-            fontSize: 64,
-            fill: "#00FFFF",
-            stroke: '#ff3300',
-            strokeThickness: 4,
-            dropShadow: true,
-            dropShadowColor: "green",
-            dropShadowBlur: 4,
-            dropShadowAngle: Math.PI / 6,
-            dropShadowDistance: 6,
-        }));
-        this.message.x = 60;
-        this.message.y = this.stage.height / 2 - 32;
-        this.gameOverScene.addChild(this.message);
-
         this.setupController();
         this.ticker.add((delta) => this.loop(delta));
     }
@@ -95,7 +79,7 @@ export class Game extends Application {
         this.processBar = new ProcessBar(this.Level, blockSize);
         data = this.Level.getData(lv)
 
-        this.gameScene.addChild(this.processBar);
+        this.gameScene.scene.addChild(this.processBar);
 
         indexNewBlock = 2;
         this.createBlock(indexNewBlock, -1, 1);
@@ -322,7 +306,7 @@ export class Game extends Application {
         if (this.newBlock != undefined)
             this.newBlock.alpha = 0;
         this.newBlock = new SpriteObject(
-            this.gameScene,
+            this.gameScene.scene,
             TextureCache[value + ".png"],
             XMilestones + x * blockSize,
             YMilestones + y * blockSize
@@ -341,7 +325,7 @@ export class Game extends Application {
             let temp = [];
             for (let j = 0; j < Ncolum; j++) {
                 temp[j] = new SpriteObject(
-                    this.gameScene,
+                    this.gameScene.scene,
                     TextureCache[data[i][j] + ".png"],
                     j * blockSize + XMilestones,
                     i * blockSize + YMilestones
@@ -354,8 +338,8 @@ export class Game extends Application {
     }
 
     end() {
-        this.gameScene.setVisible(false);
-        this.gameOverScene.setVisible(true);
+        this.gameScene.scene.setVisible(false);
+        this.gameOverScene.scene.setVisible(true);
     }
 
     distance(x, y) {
