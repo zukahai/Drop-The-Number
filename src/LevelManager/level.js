@@ -1,6 +1,9 @@
+import LevelLoader from "./LevelLoader";
+
 export default class Level {
-    constructor(JsonData) {
-        this.JsonData = JsonData;
+    constructor() {
+        this.levelLoader = new LevelLoader();
+        this.JsonData = this.levelLoader.json;
         this.lv = [];
         this.init();
     }
@@ -28,5 +31,9 @@ export default class Level {
         for (let i = 0; i < lv - 1; i++)
             score += this.lv[i].target;
         return score;
+    }
+
+    getNumberOfLevel() {
+        return this.Nlevel;
     }
 }

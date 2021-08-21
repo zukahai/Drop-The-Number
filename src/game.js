@@ -6,8 +6,6 @@ import ProcessBar from "./ProcessBar.js";
 import TouchListener from "./ActionManager/touch.js";
 import Level from "./LevelManager/level.js";
 
-import * as level_game from '../dist/levels/level.json';
-
 const TextureCache = utils.TextureCache;
 
 let block = [];
@@ -24,7 +22,6 @@ let listMove = [];
 let listDown = [];
 let blur = 0.8;
 let level = 1;
-let Nlevel = Object.keys(level_game).length - 1;
 
 let data = []
 
@@ -48,16 +45,15 @@ export class Game extends Application {
     }
 
     setup() {
-        this.Level = new Level(level_game);
+        this.Level = new Level();
         this.gameScene = new Scene(this.stage);
 
         this.gameOverScene = new Scene(this.stage);
         this.gameOverScene.setVisible(false);
 
-        this.processBar = new ProcessBar(level_game.level1.target, blockSize);
+        this.processBar = new ProcessBar();
         this.gameScene.addChild(this.processBar);
 
-        data = level_game.level1.data;
 
         this.level_text = new Text("Level 1", new TextStyle({
             fontFamily: "Arial",
@@ -138,7 +134,7 @@ export class Game extends Application {
 
         if (this.processBar.score >= this.processBar.targetScore) {
             console.log("Next level");
-            if (level == Nlevel) {
+            if (level == this.Level.getNumberOfLevel()) {
                 this.end();
                 this.message.text = "You win!";
                 this.ticker.stop();
