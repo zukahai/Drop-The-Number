@@ -23,7 +23,11 @@ export default class gameOverScene {
             dropShadowDistance: 6,
         }));
         this.message.x = 60;
-        this.message.y = this.stage.height / 2 - 32;
+        this.message.y = document.documentElement.clientHeight / 2 - 64;
         this.scene.addChild(this.message);
+    }
+
+    setText(Text) {
+        this.message.text = Text;
     }
 }

@@ -99,7 +99,7 @@ export class Game extends Application {
         if (this.processBar.score >= this.processBar.targetScore) {
             if (this.Level.currentLevel == this.Level.getNumberOfLevel()) {
                 this.end();
-                this.message.text = "You win!";
+                this.gameOverScene.setText("You win!");
                 this.ticker.stop();
             } else {
                 listMove = [];
@@ -152,7 +152,7 @@ export class Game extends Application {
         this.newBlock.y += speedDown;
         if (this.checkLost()) {
             this.end();
-            this.message.text = "You lost!";
+            this.gameOverScene.setText("You lost!");
             this.ticker.stop();
         }
         if (this.newBlock.y >= YMilestones && data[Math.floor((this.newBlock.y - YMilestones + blockSize) / blockSize)][Math.floor((this.newBlock.x - XMilestones + 0.5 * blockSize) / blockSize)] != 0) {
