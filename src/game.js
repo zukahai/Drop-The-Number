@@ -50,7 +50,7 @@ export class Game extends Application {
         this.gameOverScene = new Scene(this.stage);
         this.gameOverScene.setVisible(false);
 
-        this.processBar = new ProcessBar();
+        this.processBar = new ProcessBar(this.Level, blockSize);
         this.gameScene.addChild(this.processBar);
 
 
@@ -110,7 +110,7 @@ export class Game extends Application {
 
     loadLevel(lv) {
 
-        this.processBar = new ProcessBar(this.Level.getScore(), this.Level.getTarget() + this.Level.getScore(), blockSize);
+        this.processBar = new ProcessBar(this.Level, blockSize);
         data = this.Level.getData(lv)
 
         this.gameScene.addChild(this.processBar);

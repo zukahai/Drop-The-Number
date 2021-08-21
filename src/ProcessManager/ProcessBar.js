@@ -2,11 +2,11 @@ import { Container, Graphics, Text, TextStyle } from 'pixi.js'
 
 
 export default class ProcessBar extends Container {
-    constructor(score, targetScore, blockSize) {
+    constructor(Level, blockSize) {
         super();
-        this.targetScore = targetScore;
+        this.targetScore = Level.getTarget() + Level.getScore();
         this.blockSize = blockSize;
-        this.score = score;
+        this.score = Level.getScore();
 
         this.background = new Graphics();
         this.background.lineStyle(this.blockSize / 20, 0xFF00FF, 0);
