@@ -12,17 +12,17 @@ export default class Level {
         this.lv = this.levelLoader.getLevel();
     }
 
-    getTarget(lv) {
-        return this.lv[lv - 1].target;
+    getTarget() {
+        return this.lv[this.currentLevel - 1].target;
     }
 
-    getData(lv) {
-        return this.lv[lv - 1].data;
+    getData() {
+        return this.lv[this.currentLevel - 1].data;
     }
 
-    getScore(lv) {
+    getScore() {
         let score = 0;
-        for (let i = 0; i < lv - 1; i++)
+        for (let i = 0; i < this.currentLevel - 1; i++)
             score += this.lv[i].target;
         return score;
     }

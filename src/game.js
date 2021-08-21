@@ -110,7 +110,7 @@ export class Game extends Application {
 
     loadLevel(lv) {
 
-        this.processBar = new ProcessBar(this.Level.getScore(lv), this.Level.getTarget(lv) + this.Level.getScore(lv), blockSize);
+        this.processBar = new ProcessBar(this.Level.getScore(), this.Level.getTarget() + this.Level.getScore(), blockSize);
         data = this.Level.getData(lv)
 
         this.gameScene.addChild(this.processBar);
