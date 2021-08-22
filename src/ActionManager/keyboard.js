@@ -3,8 +3,8 @@ export default class Keyboard {
         this.value = value;
         this.isDown = false;
         this.isUp = true;
-        this.press = undefined;
         this.release = undefined;
+        this.press = undefined;
         this.handle();
     }
 
