@@ -6,6 +6,7 @@ import TouchListener from "./ActionManager/touch.js";
 import Level from "./LevelManager/level.js";
 import gameScene from "./SceneManager/gameScene.js";
 import gameOverScene from "./SceneManager/gameOverScene.js";
+import listSprite from "./SpriteManager/listSprite.js";
 
 const TextureCache = utils.TextureCache;
 
@@ -47,9 +48,7 @@ export class Game extends Application {
     setup() {
         this.Level = new Level();
         this.gameScene = new gameScene(this.stage)
-
         this.gameOverScene = new gameOverScene(this.stage);
-
         this.processBar = new ProcessBar(this.Level, blockSize);
         this.gameScene.scene.addChild(this.processBar);
 
