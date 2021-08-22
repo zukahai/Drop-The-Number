@@ -23,4 +23,8 @@ export default class LevelLoader {
     getLevel() {
         return this.level;
     }
+
+    getNumberOfLevel() {
+        return this.level.length;
+    }
 }

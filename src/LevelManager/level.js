@@ -7,8 +7,8 @@ export default class Level {
     }
 
     init() {
-        this.Nlevel = 6;
         this.levelLoader = new LevelLoader();
+        this.Nlevel = this.levelLoader.getNumberOfLevel();
         this.lv = this.levelLoader.getLevel();
     }
 
