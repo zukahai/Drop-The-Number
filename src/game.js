@@ -83,6 +83,8 @@ export class Game extends Application {
 
         indexNewBlock = 2;
         this.createBlock(indexNewBlock, -1, 1);
+
+        listDown = listDown = [];
     }
 
     loop(delta) {
@@ -185,7 +187,9 @@ export class Game extends Application {
                 let i = Nrow - 1;
                 for (i = Nrow - 1; i >= 1; i--)
                     if (data[i][j] == 0 && data[i - 1][j] != 0) {
-                        listDown.push({ x: i, y: j });
+                        for (let k = i; k >= 1; k--)
+                            if (data[k - 1][j] != 0)
+                                listDown.push({ x: k, y: j });
                         break;
                     }
 
