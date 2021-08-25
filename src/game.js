@@ -185,11 +185,20 @@ export class Game extends Application {
             for (let j = 0; j < Ncolum; j++) {
                 let i = Nrow - 1;
                 for (i = Nrow - 1; i >= 1; i--)
-                    if (data[i][j] == 0 && data[i - 1][j] != 0) {
-                        for (let k = i; k >= 1; k--)
-                            if (data[k - 1][j] != 0)
-                                listDown.push({ x: k, y: j });
-                        break;
+                    if (data[i][j] == 0) {
+                        let check = false;
+                        for (let k = i - 1; k >= 0; k--)
+                            if (data[k][j] != 0) {
+                                check = true;
+                                break;
+                            }
+                        let count = 0;
+                        if (check) {
+                            for (let k = i - 1; k >= 0; k--)
+                                if (data[k][j] != 0)
+                                    listDown.push({ x: i - count++, y: j });
+                            break;
+                        }
                     }
 
                 for (let k = i; k >= 1; k--) {
