@@ -12,7 +12,7 @@ export default class LevelLoader {
 
     init() {
         this.level = [];
-        this.level.push(level_game_2);
+        this.level.push(level_game_1);
         this.level.push(level_game_2);
         this.level.push(level_game_3);
         this.level.push(level_game_4);

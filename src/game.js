@@ -195,18 +195,19 @@ export class Game extends Application {
                         let count = 0;
                         if (check) {
                             for (let k = i - 1; k >= 0; k--)
-                                if (data[k][j] != 0)
-                                    listDown.push({ x: i - count++, y: j });
+                                if (data[k][j] != 0) {
+                                    listDown.push({ x: i - count, y: j });
+                                    listMove.push({ start: { x: k, y: j }, end: { x: block[i - count][j].x, y: block[i - count][j].y } });
+                                    data[i - count][j] = data[k][j];
+                                    data[k][j] = 0;
+                                    if (k == 0)
+                                        data[0][j] = 0;
+                                    count++;
+                                }
                             break;
                         }
-                    }
 
-                for (let k = i; k >= 1; k--) {
-                    data[k][j] = data[k - 1][j];
-                    listMove.push({ start: { x: k - 1, y: j }, end: { x: block[k][j].x, y: block[k][j].y } });
-                    if (k == 1)
-                        data[0][j] = 0;
-                }
+                    }
             }
 
             typeLoop = 3;
