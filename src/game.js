@@ -97,19 +97,7 @@ export class Game extends Application {
             this.NextLevel();
         }
 
-        if (this.processBar.score >= this.processBar.targetScore) {
-            if (this.Level.currentLevel == this.Level.getNumberOfLevel()) {
-                this.end();
-                this.gameOverScene.setText("You win!");
-                this.ticker.stop();
-            } else {
-                listMove = [];
-                for (let i = 0; i < Nrow; i++)
-                    for (let j = 0; j < Ncolum; j++)
-                        listMove.push({ start: { x: i, y: j }, end: { x: XMilestones + j * blockSize, y: -2 * blockSize } });
-                typeLoop = 4;
-            }
-        }
+        this.checkProcess();
 
         if (typeLoop == 1 && this.touchListener.ponit.x >= XMilestones && this.touchListener.ponit.x <= XMilestones + Ncolum * blockSize) {
             if ((this.newBlock.x + blockSize / 2) - (this.touchListener.ponit.x) > blockSize / 2)
@@ -367,6 +355,22 @@ export class Game extends Application {
         if (I >= 0 && data[I][J + ch] != 0)
             return;
         this.newBlock.x += ch * blockSize;
+    }
+
+    checkProcess() {
+        if (this.processBar.score >= this.processBar.targetScore) {
+            if (this.Level.currentLevel == this.Level.getNumberOfLevel()) {
+                this.end();
+                this.gameOverScene.setText("You win!");
+                this.ticker.stop();
+            } else {
+                listMove = [];
+                for (let i = 0; i < Nrow; i++)
+                    for (let j = 0; j < Ncolum; j++)
+                        listMove.push({ start: { x: i, y: j }, end: { x: XMilestones + j * blockSize, y: -2 * blockSize } });
+                typeLoop = 4;
+            }
+        }
     }
 
     setupController() {
