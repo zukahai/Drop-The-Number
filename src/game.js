@@ -88,13 +88,13 @@ export class Game extends Application {
 
     loop(delta) {
         if (typeLoop == 1) {
-            this.loopType1();
+            this.newBlockDown();
         } else if (typeLoop == 2) {
-            this.loopType2();
+            this.listBlockDown();
         } else if (typeLoop == 3) {
-            this.loopType3();
+            this.mergeBlock();
         } else if (typeLoop == 4) {
-            this.loopType4();
+            this.NextLevel();
         }
 
         if (this.processBar.score >= this.processBar.targetScore) {
@@ -120,7 +120,7 @@ export class Game extends Application {
         }
     }
 
-    loopType4() {
+    NextLevel() {
         let checkEndLoop4 = false;
 
         if (listMove.length == 0)
@@ -149,7 +149,7 @@ export class Game extends Application {
         }
     }
 
-    loopType1() {
+    newBlockDown() {
         this.newBlock.y += speedDown;
         if (this.checkLost()) {
             this.end();
@@ -165,7 +165,7 @@ export class Game extends Application {
         }
     }
 
-    loopType2() {
+    listBlockDown() {
         let checkEndLoop2 = false;
         if (listMove.length == 0)
             checkEndLoop2 = true;
@@ -214,7 +214,7 @@ export class Game extends Application {
         }
     }
 
-    loopType3() {
+    mergeBlock() {
         let checkEndLoop3 = false;
         if (listMove.length == 0)
             checkEndLoop3 = true;
