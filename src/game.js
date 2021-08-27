@@ -6,7 +6,7 @@ import TouchListener from "./ActionManager/touch.js";
 import Level from "./LevelManager/level.js";
 import gameScene from "./SceneManager/gameScene.js";
 import gameOverScene from "./SceneManager/gameOverScene.js";
-import { loadData, listMoveBlock } from "./utils.js";
+import { loadData, listMoveBlock } from "../Utils/utils.js";
 
 const TextureCache = utils.TextureCache;
 
