@@ -45,3 +45,42 @@ export default class Keyboard {
         window.removeEventListener("keyup", this.upListener);
     }
 }
+
+export function setupController(game) {
+    let left = new Keyboard("ArrowLeft"),
+        up = new Keyboard("ArrowUp"),
+        right = new Keyboard("ArrowRight"),
+        down = new Keyboard("ArrowDown");
+
+    left.setPress(() => {
+        game.moveBlock(-1);
+    });
+
+    up.setPress(() => {
+
+    });
+
+    right.setPress(() => {
+        game.moveBlock(1);
+    });
+
+    down.setPress(() => {
+        game.speedDown = 30 * game.speedBlock;
+    });
+
+    left.setRelease(() => {
+
+    });
+
+    up.setRelease(() => {
+
+    });
+
+    right.setRelease(() => {
+
+    });
+
+    down.setRelease(() => {
+        game.speedDown = game.speedBlock;
+    });
+}

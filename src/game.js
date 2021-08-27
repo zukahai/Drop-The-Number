@@ -7,6 +7,7 @@ import Level from "./LevelManager/level.js";
 import gameScene from "./SceneManager/gameScene.js";
 import gameOverScene from "./SceneManager/gameOverScene.js";
 import { loadData, listMoveBlock } from "./Utils/utils.js";
+import { setupController } from "./ActionManager/keyboard.js";
 
 const TextureCache = utils.TextureCache;
 
@@ -15,8 +16,6 @@ let Ncolum = 5;
 let blockSize = 80;
 let XMilestones = 0;
 let YMilestones = 0;
-let speedBlock = 0.3;
-let speedDown = speedBlock;
 
 let blur = 0.8;
 
@@ -32,7 +31,7 @@ export class Game extends Application {
         this.renderer.view.style.left = "50%";
         this.renderer.view.style.transform = "translate(-50%,-50%)";
         document.body.appendChild(this.view);
-        speedBlock = this.blockSize / 200;
+        this.speedBlock = this.blockSize / 200;
     }
 
     load() {
@@ -64,7 +63,7 @@ export class Game extends Application {
         this.touchListener = new TouchListener(this.view, true);
         this.createBlock(this.indexNewBlock, -1, 1);
 
-        this.setupController();
+        setupController(this);
         this.ticker.add((delta) => this.loop(delta));
     }
 
@@ -80,6 +79,8 @@ export class Game extends Application {
         this.data = [];
         this.indexNewBlock = 2;
         this.typeLoop = 1;
+        this.speedBlock = 0.3;
+        this.speedDown = this.speedBlock;
     }
 
     loop(delta) {
@@ -100,7 +101,7 @@ export class Game extends Application {
                 this.moveBlock(-1);
             else if ((this.newBlock.x + this.blockSize / 2) - (this.touchListener.ponit.x) < -this.blockSize / 2)
                 this.moveBlock(1);
-            speedDown = this.touchListener.ponit.z * speedBlock;
+            this.speedDown = this.touchListener.ponit.z * this.speedBlock;
         }
     }
 
@@ -137,7 +138,7 @@ export class Game extends Application {
     }
 
     newBlockDown() {
-        this.newBlock.y += speedDown;
+        this.newBlock.y += this.speedDown;
         if (this.checkLost()) {
             this.gameOverScene.end(this);
             this.gameOverScene.setText("You lost!");
@@ -239,7 +240,7 @@ export class Game extends Application {
     }
 
     createBlock(x, y, VALUE) {
-        speedDown = speedBlock;
+        this.speedDown = this.speedBlock;
         if (this.touchListener != undefined)
             this.touchListener.ponit.z = 1;
         let k = 3;
@@ -292,45 +293,5 @@ export class Game extends Application {
                 this.typeLoop = 4;
             }
         }
-    }
-
-    setupController() {
-        let left = new Keyboard("ArrowLeft"),
-            up = new Keyboard("ArrowUp"),
-            right = new Keyboard("ArrowRight"),
-            down = new Keyboard("ArrowDown");
-
-        left.setPress(() => {
-            this.moveBlock(-1);
-        });
-
-        up.setPress(() => {
-
-        });
-
-        right.setPress(() => {
-            this.moveBlock(1);
-        });
-
-        down.setPress(() => {
-            speedDown = 30 * speedBlock;
-        });
-
-        left.setRelease(() => {
-
-        });
-
-        up.setRelease(() => {
-
-        });
-
-        right.setRelease(() => {
-
-        });
-
-        down.setRelease(() => {
-            speedDown = speedBlock;
-        });
-
     }
 }
