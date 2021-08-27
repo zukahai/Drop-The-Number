@@ -8,6 +8,7 @@ import gameOverScene from "./SceneManager/gameOverScene.js";
 import { loadData } from "./Utils/utils.js";
 import { setupController } from "./ActionManager/keyboard.js";
 import { NextLevel, newBlockDown, listBlockDown, mergeBlock, createBlock } from "./Utils/blockMove.js";
+import { TouchListenerEvent } from "./ActionManager/touch.js";
 
 const TextureCache = utils.TextureCache;
 
@@ -16,8 +17,6 @@ let Ncolum = 5;
 let blockSize = 80;
 let XMilestones = 0;
 let YMilestones = 0;
-
-let blur = 0.8;
 
 export class Game extends Application {
     constructor() {
@@ -81,27 +80,26 @@ export class Game extends Application {
         this.typeLoop = 1;
         this.speedBlock = 0.3;
         this.speedDown = this.speedBlock;
+        this.blur = 0.75;
     }
 
     loop(delta) {
-        if (this.typeLoop == 1) {
-            newBlockDown(this);
-        } else if (this.typeLoop == 2) {
-            listBlockDown(this);
-        } else if (this.typeLoop == 3) {
-            mergeBlock(this);
-        } else if (this.typeLoop == 4) {
-            NextLevel(this);
+        switch (this.typeLoop) {
+            case 1:
+                newBlockDown(this);
+                break;
+            case 2:
+                listBlockDown(this);
+                break;
+            case 3:
+                mergeBlock(this);
+                break;
+            case 4:
+                NextLevel(this);
+                break;
         }
 
         this.processBar.checkProcess(this);
-
-        if (this.typeLoop == 1 && this.touchListener.ponit.x >= this.XMilestones && this.touchListener.ponit.x <= this.XMilestones + this.Ncolum * this.blockSize) {
-            if ((this.newBlock.x + this.blockSize / 2) - (this.touchListener.ponit.x) > this.blockSize / 2)
-                this.moveBlock(-1);
-            else if ((this.newBlock.x + this.blockSize / 2) - (this.touchListener.ponit.x) < -this.blockSize / 2)
-                this.moveBlock(1);
-            this.speedDown = this.touchListener.ponit.z * this.speedBlock;
-        }
+        TouchListenerEvent(this);
     }
 }

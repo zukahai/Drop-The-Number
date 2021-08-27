@@ -65,3 +65,13 @@ export default class TouchListener {
         });
     }
 }
+
+export function TouchListenerEvent(game) {
+    if (game.typeLoop == 1 && game.touchListener.ponit.x >= game.XMilestones && game.touchListener.ponit.x <= game.XMilestones + game.Ncolum * game.blockSize) {
+        if ((game.newBlock.x + game.blockSize / 2) - (game.touchListener.ponit.x) > game.blockSize / 2)
+            game.moveBlock(-1);
+        else if ((game.newBlock.x + game.blockSize / 2) - (game.touchListener.ponit.x) < -game.blockSize / 2)
+            game.moveBlock(1);
+        game.speedDown = game.touchListener.ponit.z * game.speedBlock;
+    }
+}

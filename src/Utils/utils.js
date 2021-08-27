@@ -34,28 +34,28 @@ export function listMoveBlock(game, x, y) {
         listMove.push({ start: { x: I + 1, y: J }, end: { x: game.block[I][J].x, y: game.block[I][J].y } });
         temp *= 2;
         game.data[I + 1][J] = 0;
-        game.block[I + 1][J].alpha = blur;
+        game.block[I + 1][J].alpha = game.blur;
     }
 
     if (I >= 1 && I < game.Nrow - 1 && game.data[I][J] == game.data[I - 1][J]) {
         listMove.push({ start: { x: I - 1, y: J }, end: { x: game.block[I][J].x, y: game.block[I][J].y } });
         temp *= 2;
         game.data[I - 1][J] = 0;
-        game.block[I - 1][J].alpha = blur;
+        game.block[I - 1][J].alpha = game.blur;
     }
 
     if (I >= 0 && J >= 1 && game.data[I][J] == game.data[I][J - 1]) {
         listMove.push({ start: { x: I, y: J - 1 }, end: { x: game.block[I][J].x, y: game.block[I][J].y } });
         temp *= 2;
         game.data[I][J - 1] = 0;
-        game.block[I][J - 1].alpha = blur;
+        game.block[I][J - 1].alpha = game.blur;
     }
 
     if (I >= 0 && J < game.Ncolum && game.data[I][J] == game.data[I][J + 1]) {
         listMove.push({ start: { x: I, y: J + 1 }, end: { x: game.block[I][J].x, y: game.block[I][J].y } });
         temp *= 2;
         game.data[I][J + 1] = 0;
-        game.block[I][J + 1].alpha = blur;
+        game.block[I][J + 1].alpha = game.blur;
     }
 
     if (game.data[I][J] != temp && game.data[I + 1][J] != 0) {
