@@ -1,4 +1,4 @@
-import { Application, Text, TextStyle, utils } from "pixi.js";
+import { Application } from "pixi.js";
 import ProcessBar from "./ProcessManager/ProcessBar.js";
 import TouchListener from "./ActionManager/touch.js";
 import Level from "./LevelManager/level.js";
@@ -35,21 +35,6 @@ export class Game extends Application {
         this.loader.load(() => this.setup());
     }
 
-    setup() {
-        this.Level = new Level();
-        this.gameScene = new gameScene(this.stage)
-        this.gameOverScene = new gameOverScene(this.stage);
-        this.processBar = new ProcessBar(this.Level, this.blockSize);
-        this.gameScene.scene.addChild(this.processBar);
-        this.Level.loadLevel(this);
-        createHeading(this);
-        loadData(this);
-        this.touchListener = new TouchListener(this.view, true);
-        createBlock(this, -1, 1);
-        setupController(this);
-        this.ticker.add((delta) => this.loop(delta));
-    }
-
     init() {
         this.Nrow = Nrow;
         this.Ncolum = Ncolum;
@@ -65,6 +50,21 @@ export class Game extends Application {
         this.speedBlock = 0.3;
         this.speedDown = this.speedBlock;
         this.blur = 0.75;
+    }
+
+    setup() {
+        this.Level = new Level();
+        this.gameScene = new gameScene(this.stage)
+        this.gameOverScene = new gameOverScene(this.stage);
+        this.processBar = new ProcessBar(this.Level, this.blockSize);
+        this.gameScene.scene.addChild(this.processBar);
+        this.Level.loadLevel(this);
+        createHeading(this);
+        loadData(this);
+        this.touchListener = new TouchListener(this.view, true);
+        createBlock(this, -1, 1);
+        setupController(this);
+        this.ticker.add((delta) => this.loop(delta));
     }
 
     loop(delta) {
