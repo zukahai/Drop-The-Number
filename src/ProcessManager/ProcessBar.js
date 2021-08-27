@@ -49,4 +49,20 @@ export default class ProcessBar extends Container {
         this.processBar.beginFill(0x00FF00);
         this.processBar.drawRect(0.3 * this.blockSize, 0.7 * this.blockSize, (this.score / this.targetScore) * 4.8 * this.blockSize, this.blockSize / 3, 10);
     }
+
+    checkProcess(game) {
+        if (game.processBar.score >= game.processBar.targetScore) {
+            if (game.Level.currentLevel == game.Level.getNumberOfLevel()) {
+                game.gameOverScene.end(game);
+                game.gameOverScene.setText("You win!");
+                game.ticker.stop();
+            } else {
+                game.listMove = [];
+                for (let i = 0; i < game.Nrow; i++)
+                    for (let j = 0; j < game.Ncolum; j++)
+                        game.listMove.push({ start: { x: i, y: j }, end: { x: game.XMilestones + j * game.blockSize, y: -2 * game.blockSize } });
+                game.typeLoop = 4;
+            }
+        }
+    }
 }

@@ -84,7 +84,7 @@ export function listBlockDown(game) {
 
 export function newBlockDown(game) {
     game.newBlock.y += game.speedDown;
-    if (game.checkLost()) {
+    if (checkLost(game)) {
         game.gameOverScene.end(game);
         game.gameOverScene.setText("You lost!");
         game.ticker.stop();
@@ -125,4 +125,11 @@ export function mergeBlock(game) {
             game.typeLoop = 1;
         } else game.typeLoop = 2;
     }
+}
+
+export function checkLost(game) {
+    for (let j = 0; j < game.Ncolum; j++)
+        if (game.data[0][j] != 0)
+            return true;
+    return false;
 }

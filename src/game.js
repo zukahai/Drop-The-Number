@@ -94,7 +94,7 @@ export class Game extends Application {
             NextLevel(this);
         }
 
-        this.checkProcess();
+        this.processBar.checkProcess(this);
 
         if (this.typeLoop == 1 && this.touchListener.ponit.x >= this.XMilestones && this.touchListener.ponit.x <= this.XMilestones + this.Ncolum * this.blockSize) {
             if ((this.newBlock.x + this.blockSize / 2) - (this.touchListener.ponit.x) > this.blockSize / 2)
@@ -150,21 +150,5 @@ export class Game extends Application {
         if (I >= 0 && this.data[I][J + ch] != 0)
             return;
         this.newBlock.x += ch * this.blockSize;
-    }
-
-    checkProcess() {
-        if (this.processBar.score >= this.processBar.targetScore) {
-            if (this.Level.currentLevel == this.Level.getNumberOfLevel()) {
-                this.gameOverScene.end(this);
-                this.gameOverScene.setText("You win!");
-                this.ticker.stop();
-            } else {
-                this.listMove = [];
-                for (let i = 0; i < this.Nrow; i++)
-                    for (let j = 0; j < this.Ncolum; j++)
-                        this.listMove.push({ start: { x: i, y: j }, end: { x: this.XMilestones + j * this.blockSize, y: -2 * this.blockSize } });
-                this.typeLoop = 4;
-            }
-        }
     }
 }
