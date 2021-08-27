@@ -151,7 +151,7 @@ export class Game extends Application {
     newBlockDown() {
         this.newBlock.y += speedDown;
         if (this.checkLost()) {
-            this.end();
+            this.gameOverScene.end();
             this.gameOverScene.setText("You lost!");
             this.ticker.stop();
         }
@@ -279,14 +279,10 @@ export class Game extends Application {
         this.newBlock.value = value;
     }
 
-    end() {
-        this.gameScene.scene.setVisible(false);
-        this.gameOverScene.scene.setVisible(true);
-    }
-
-    distance(x, y) {
-        return Math.sqrt(x * x + y * y);
-    }
+    // end() {
+    //     this.gameScene.scene.setVisible(false);
+    //     this.gameOverScene.scene.setVisible(true);
+    // }
 
     moveBlock(ch) {
         let I = Math.floor((this.newBlock.y - this.YMilestones + 1 * this.blockSize) / this.blockSize);
@@ -301,7 +297,7 @@ export class Game extends Application {
     checkProcess() {
         if (this.processBar.score >= this.processBar.targetScore) {
             if (this.Level.currentLevel == this.Level.getNumberOfLevel()) {
-                this.end();
+                this.gameOverScene.end();
                 this.gameOverScene.setText("You win!");
                 this.ticker.stop();
             } else {
