@@ -7,7 +7,7 @@ import gameScene from "./SceneManager/gameScene.js";
 import gameOverScene from "./SceneManager/gameOverScene.js";
 import { loadData } from "./Utils/utils.js";
 import { setupController } from "./ActionManager/keyboard.js";
-import { NextLevel, newBlockDown, listBlockDown, mergeBlock } from "./Utils/blockMove.js";
+import { NextLevel, newBlockDown, listBlockDown, mergeBlock, createBlock } from "./Utils/blockMove.js";
 
 const TextureCache = utils.TextureCache;
 
@@ -61,7 +61,7 @@ export class Game extends Application {
 
         loadData(this);
         this.touchListener = new TouchListener(this.view, true);
-        this.createBlock(this.indexNewBlock, -1, 1);
+        createBlock(this, -1, 1);
 
         setupController(this);
         this.ticker.add((delta) => this.loop(delta));
@@ -104,43 +104,6 @@ export class Game extends Application {
             this.speedDown = this.touchListener.ponit.z * this.speedBlock;
         }
     }
-
-    checkLost() {
-        for (let j = 0; j < this.Ncolum; j++)
-            if (this.data[0][j] != 0)
-                return true;
-        return false;
-    }
-
-    createBlock(x, y, VALUE) {
-        this.speedDown = this.speedBlock;
-        if (this.touchListener != undefined)
-            this.touchListener.ponit.z = 1;
-        let k = 3;
-        for (let i = 0; i < this.Nrow; i++)
-            for (let j = 0; j < this.Ncolum; j++)
-                if (k < Math.floor(Math.log2(this.data[i][j])))
-                    k = Math.floor(Math.log2(this.data[i][j]));
-        if (k > 6)
-            k = Math.floor((k + 1) / 2);
-        else k = 3;
-        if (VALUE > 0)
-            k = VALUE;
-        let value = Math.pow(2, Math.floor(Math.random() * 999) % k + 1);
-        loadData(this);
-        if (this.newBlock != undefined)
-            this.newBlock.alpha = 0;
-        this.newBlock = new SpriteObject(
-            this.gameScene.scene,
-            TextureCache[value + ".png"],
-            this.XMilestones + x * this.blockSize,
-            this.YMilestones + y * this.blockSize
-        );
-        this.newBlock.width = this.blockSize;
-        this.newBlock.height = this.blockSize;
-        this.newBlock.value = value;
-    }
-
 
     moveBlock(ch) {
         let I = Math.floor((this.newBlock.y - this.YMilestones + 1 * this.blockSize) / this.blockSize);

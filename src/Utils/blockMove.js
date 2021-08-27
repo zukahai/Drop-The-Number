@@ -1,4 +1,6 @@
 import { listMoveBlock, loadData } from "./utils";
+import SpriteObject from "../SpriteManager/sprite-object";
+import { TextureCache } from "@pixi/utils";
 
 export function NextLevel(game) {
     let checkEndLoop4 = false;
@@ -121,7 +123,7 @@ export function mergeBlock(game) {
         for (let i = 0; i < listDown2.length; i++)
             game.listMove = game.listMove.concat(listMoveBlock(game, listDown2[i].x, listDown2[i].y));
         if (game.listMove.length == 0) {
-            game.createBlock(game.indexNewBlock, -1, -1);
+            createBlock(game, -1, -1);
             game.typeLoop = 1;
         } else game.typeLoop = 2;
     }
@@ -132,4 +134,34 @@ export function checkLost(game) {
         if (game.data[0][j] != 0)
             return true;
     return false;
+}
+
+export function createBlock(game, y, VALUE) {
+    let x = game.indexNewBlock;
+    game.speedDown = game.speedBlock;
+    if (game.touchListener != undefined)
+        game.touchListener.ponit.z = 1;
+    let k = 3;
+    for (let i = 0; i < game.Nrow; i++)
+        for (let j = 0; j < game.Ncolum; j++)
+            if (k < Math.floor(Math.log2(game.data[i][j])))
+                k = Math.floor(Math.log2(game.data[i][j]));
+    if (k > 6)
+        k = Math.floor((k + 1) / 2);
+    else k = 3;
+    if (VALUE > 0)
+        k = VALUE;
+    let value = Math.pow(2, Math.floor(Math.random() * 999) % k + 1);
+    loadData(game);
+    if (game.newBlock != undefined)
+        game.newBlock.alpha = 0;
+    game.newBlock = new SpriteObject(
+        game.gameScene.scene,
+        TextureCache[value + ".png"],
+        game.XMilestones + x * game.blockSize,
+        game.YMilestones + y * game.blockSize
+    );
+    game.newBlock.width = game.blockSize;
+    game.newBlock.height = game.blockSize;
+    game.newBlock.value = value;
 }

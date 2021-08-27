@@ -1,5 +1,6 @@
 import LevelLoader from "./LevelLoader";
 import ProcessBar from "../ProcessManager/ProcessBar";
+import { createBlock } from "../Utils/blockMove";
 
 export default class Level {
     constructor() {
@@ -44,7 +45,7 @@ export default class Level {
         game.gameScene.scene.addChild(game.processBar);
 
         game.indexNewBlock = 2;
-        game.createBlock(game.indexNewBlock, -1, 1);
+        createBlock(game, -1, 1);
 
         game.listDown = game.listDown = [];
     }
