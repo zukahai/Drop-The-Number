@@ -6,8 +6,7 @@ import TouchListener from "./ActionManager/touch.js";
 import Level from "./LevelManager/level.js";
 import gameScene from "./SceneManager/gameScene.js";
 import gameOverScene from "./SceneManager/gameOverScene.js";
-import listSprite from "./SpriteManager/listSprite.js";
-import { sayHi } from "./utils.js";
+import { loadData } from "./utils.js";
 
 const TextureCache = utils.TextureCache;
 
@@ -29,12 +28,13 @@ export class Game extends Application {
         YMilestones = 2.2 * blockSize;
         XMilestones = 0.2 * blockSize;
         super({ width: (Ncolum + 0.4) * blockSize, height: (Nrow + 2.5) * blockSize });
+        this.init();
         this.renderer.view.style.position = "absolute";
         this.renderer.view.style.top = "50%";
         this.renderer.view.style.left = "50%";
         this.renderer.view.style.transform = "translate(-50%,-50%)";
         document.body.appendChild(this.view);
-        speedBlock = blockSize / 200;
+        speedBlock = this.blockSize / 200;
     }
 
     load() {
@@ -43,28 +43,27 @@ export class Game extends Application {
     }
 
     setup() {
-        this.init();
         console.log(this.listMove);
         this.Level = new Level();
         this.gameScene = new gameScene(this.stage)
         this.gameOverScene = new gameOverScene(this.stage);
-        this.processBar = new ProcessBar(this.Level, blockSize);
+        this.processBar = new ProcessBar(this.Level, this.blockSize);
         this.gameScene.scene.addChild(this.processBar);
 
         this.loadLevel(this.Level.currentLevel);
 
-        for (let j = 0; j < Ncolum; j++) {
+        for (let j = 0; j < this.Ncolum; j++) {
             let t = new SpriteObject(
                 this.gameScene.scene,
                 TextureCache["head.png"],
-                j * blockSize + XMilestones,
-                YMilestones - blockSize
+                j * this.blockSize + this.XMilestones,
+                this.YMilestones - this.blockSize
             );
-            t.width = blockSize;
-            t.height = blockSize;
+            t.width = this.blockSize;
+            t.height = this.blockSize;
         }
 
-        this.loaddata();
+        loadData(this);
         this.touchListener = new TouchListener(this.view, true);
         this.createBlock(indexNewBlock, -1, 1);
 
@@ -73,6 +72,11 @@ export class Game extends Application {
     }
 
     init() {
+        this.Nrow = Nrow;
+        this.Ncolum = Ncolum;
+        this.blockSize = blockSize;
+        this.XMilestones = XMilestones;
+        this.YMilestones = YMilestones;
         this.listMove = [];
         this.listDown = [];
         this.block = [];
@@ -81,7 +85,7 @@ export class Game extends Application {
 
     loadLevel(lv) {
 
-        this.processBar = new ProcessBar(this.Level, blockSize);
+        this.processBar = new ProcessBar(this.Level, this.blockSize);
         this.data = this.Level.getData();
 
         this.gameScene.scene.addChild(this.processBar);
@@ -105,10 +109,10 @@ export class Game extends Application {
 
         this.checkProcess();
 
-        if (typeLoop == 1 && this.touchListener.ponit.x >= XMilestones && this.touchListener.ponit.x <= XMilestones + Ncolum * blockSize) {
-            if ((this.newBlock.x + blockSize / 2) - (this.touchListener.ponit.x) > blockSize / 2)
+        if (typeLoop == 1 && this.touchListener.ponit.x >= this.XMilestones && this.touchListener.ponit.x <= this.XMilestones + this.Ncolum * this.blockSize) {
+            if ((this.newBlock.x + this.blockSize / 2) - (this.touchListener.ponit.x) > this.blockSize / 2)
                 this.moveBlock(-1);
-            else if ((this.newBlock.x + blockSize / 2) - (this.touchListener.ponit.x) < -blockSize / 2)
+            else if ((this.newBlock.x + this.blockSize / 2) - (this.touchListener.ponit.x) < -this.blockSize / 2)
                 this.moveBlock(1);
             speedDown = this.touchListener.ponit.z * speedBlock;
         }
@@ -125,7 +129,7 @@ export class Game extends Application {
         for (let i = 0; i < this.listMove.length; i++) {
             let x = this.listMove[i].end.x;
             let y = this.listMove[i].end.y;
-            if (Math.abs(this.block[this.listMove[i].start.x][this.listMove[i].start.y].x - this.listMove[i].end.x) > this.blockSize / 5 || Math.abs(this.block[this.listMove[i].start.x][this.listMove[i].start.y].y - this.listMove[i].end.y) > blockSize / 5) {
+            if (Math.abs(this.block[this.listMove[i].start.x][this.listMove[i].start.y].x - this.listMove[i].end.x) > this.blockSize / 5 || Math.abs(this.block[this.listMove[i].start.x][this.listMove[i].start.y].y - this.listMove[i].end.y) > this.blockSize / 5) {
                 for (let k = 0; k < 5; k++) {
                     x = (this.block[this.listMove[i].start.x][this.listMove[i].start.y].x + x) / 2;
                     y = (this.block[this.listMove[i].start.x][this.listMove[i].start.y].y + y) / 2;
@@ -152,12 +156,12 @@ export class Game extends Application {
             this.gameOverScene.setText("You lost!");
             this.ticker.stop();
         }
-        if (this.newBlock.y >= YMilestones && this.data[Math.floor((this.newBlock.y - YMilestones + blockSize) / blockSize)][Math.floor((this.newBlock.x - XMilestones + 0.5 * blockSize) / blockSize)] != 0) {
-            this.data[Math.floor((this.newBlock.y - YMilestones + 0.5 * blockSize) / blockSize)][Math.floor((this.newBlock.x - XMilestones + 0.5 * blockSize) / blockSize)] = this.newBlock.value;
-            indexNewBlock = Math.floor((this.newBlock.x - XMilestones + 0.5 * blockSize) / blockSize);
+        if (this.newBlock.y >= this.YMilestones && this.data[Math.floor((this.newBlock.y - this.YMilestones + this.blockSize) / this.blockSize)][Math.floor((this.newBlock.x - this.XMilestones + 0.5 * this.blockSize) / this.blockSize)] != 0) {
+            this.data[Math.floor((this.newBlock.y - this.YMilestones + 0.5 * this.blockSize) / this.blockSize)][Math.floor((this.newBlock.x - this.XMilestones + 0.5 * this.blockSize) / this.blockSize)] = this.newBlock.value;
+            indexNewBlock = Math.floor((this.newBlock.x - this.XMilestones + 0.5 * this.blockSize) / this.blockSize);
             this.newBlock.alpha = 0;
             typeLoop = 2;
-            this.listMove = this.listMoveBlock(Math.floor((this.newBlock.y - YMilestones + 0.5 * blockSize) / blockSize), Math.floor((this.newBlock.x - XMilestones + 0.5 * blockSize) / blockSize));
+            this.listMove = this.listMoveBlock(Math.floor((this.newBlock.y - this.YMilestones + 0.5 * this.blockSize) / this.blockSize), Math.floor((this.newBlock.x - this.XMilestones + 0.5 * this.blockSize) / this.blockSize));
         }
     }
 
@@ -179,10 +183,10 @@ export class Game extends Application {
         }
 
         if (checkEndLoop2) {
-            this.loaddata();
-            for (let j = 0; j < Ncolum; j++) {
-                let i = Nrow - 1;
-                for (i = Nrow - 1; i >= 1; i--)
+            loadData(this);
+            for (let j = 0; j < this.Ncolum; j++) {
+                let i = this.Nrow - 1;
+                for (i = this.Nrow - 1; i >= 1; i--)
                     if (this.data[i][j] == 0) {
                         let check = false;
                         for (let k = i - 1; k >= 0; k--)
@@ -227,7 +231,7 @@ export class Game extends Application {
         }
 
         if (checkEndLoop3) {
-            this.loaddata();
+            loadData(this);
             this.listMove = [];
             let listDown2 = this.listDown;
             this.listDown = [];
@@ -246,14 +250,14 @@ export class Game extends Application {
         let J = y;
 
         let temp = this.data[I][J];
-        if (I >= 0 && I < Nrow - 1 && this.data[I][J] == this.data[I + 1][J]) {
+        if (I >= 0 && I < this.Nrow - 1 && this.data[I][J] == this.data[I + 1][J]) {
             listMove2.push({ start: { x: I + 1, y: J }, end: { x: this.block[I][J].x, y: this.block[I][J].y } });
             temp *= 2;
             this.data[I + 1][J] = 0;
             this.block[I + 1][J].alpha = blur;
         }
 
-        if (I >= 1 && I < Nrow - 1 && this.data[I][J] == this.data[I - 1][J]) {
+        if (I >= 1 && I < this.Nrow - 1 && this.data[I][J] == this.data[I - 1][J]) {
             listMove2.push({ start: { x: I - 1, y: J }, end: { x: this.block[I][J].x, y: this.block[I][J].y } });
             temp *= 2;
             this.data[I - 1][J] = 0;
@@ -267,7 +271,7 @@ export class Game extends Application {
             this.block[I][J - 1].alpha = blur;
         }
 
-        if (I >= 0 && J < Ncolum && this.data[I][J] == this.data[I][J + 1]) {
+        if (I >= 0 && J < this.Ncolum && this.data[I][J] == this.data[I][J + 1]) {
             listMove2.push({ start: { x: I, y: J + 1 }, end: { x: this.block[I][J].x, y: this.block[I][J].y } });
             temp *= 2;
             this.data[I][J + 1] = 0;
@@ -291,7 +295,7 @@ export class Game extends Application {
     }
 
     checkLost() {
-        for (let j = 0; j < Ncolum; j++)
+        for (let j = 0; j < this.Ncolum; j++)
             if (this.data[0][j] != 0)
                 return true;
         return false;
@@ -302,8 +306,8 @@ export class Game extends Application {
         if (this.touchListener != undefined)
             this.touchListener.ponit.z = 1;
         let k = 3;
-        for (let i = 0; i < Nrow; i++)
-            for (let j = 0; j < Ncolum; j++)
+        for (let i = 0; i < this.Nrow; i++)
+            for (let j = 0; j < this.Ncolum; j++)
                 if (k < Math.floor(Math.log2(this.data[i][j])))
                     k = Math.floor(Math.log2(this.data[i][j]));
         if (k > 6)
@@ -312,40 +316,40 @@ export class Game extends Application {
         if (VALUE > 0)
             k = VALUE;
         let value = Math.pow(2, Math.floor(Math.random() * 999) % k + 1);
-        this.loaddata();
+        loadData(this);
         if (this.newBlock != undefined)
             this.newBlock.alpha = 0;
         this.newBlock = new SpriteObject(
             this.gameScene.scene,
             TextureCache[value + ".png"],
-            XMilestones + x * blockSize,
-            YMilestones + y * blockSize
+            this.XMilestones + x * this.blockSize,
+            this.YMilestones + y * this.blockSize
         );
-        this.newBlock.width = blockSize;
-        this.newBlock.height = blockSize;
+        this.newBlock.width = this.blockSize;
+        this.newBlock.height = this.blockSize;
         this.newBlock.value = value;
     }
 
-    loaddata() {
-        if (this.block.length > 0)
-            for (let i = 0; i < Nrow; i++)
-                for (let j = 0; j < Ncolum; j++)
-                    this.block[i][j].alpha = 0;
-        for (let i = 0; i < Nrow; i++) {
-            let temp = [];
-            for (let j = 0; j < Ncolum; j++) {
-                temp[j] = new SpriteObject(
-                    this.gameScene.scene,
-                    TextureCache[this.data[i][j] + ".png"],
-                    j * blockSize + XMilestones,
-                    i * blockSize + YMilestones
-                );
-                temp[j].width = blockSize;
-                temp[j].height = blockSize;
-            }
-            this.block[i] = temp;
-        }
-    }
+    // loadData() {
+    //     if (this.block.length > 0)
+    //         for (let i = 0; i < this.Nrow; i++)
+    //             for (let j = 0; j < this.Ncolum; j++)
+    //                 this.block[i][j].alpha = 0;
+    //     for (let i = 0; i < this.Nrow; i++) {
+    //         let temp = [];
+    //         for (let j = 0; j < this.Ncolum; j++) {
+    //             temp[j] = new SpriteObject(
+    //                 this.gameScene.scene,
+    //                 TextureCache[this.data[i][j] + ".png"],
+    //                 j * this.blockSize + this.XMilestones,
+    //                 i * this.blockSize + this.YMilestones
+    //             );
+    //             temp[j].width = this.blockSize;
+    //             temp[j].height = this.blockSize;
+    //         }
+    //         this.block[i] = temp;
+    //     }
+    // }
 
     end() {
         this.gameScene.scene.setVisible(false);
@@ -357,13 +361,13 @@ export class Game extends Application {
     }
 
     moveBlock(ch) {
-        let I = Math.floor((this.newBlock.y - YMilestones + 1 * blockSize) / blockSize);
-        let J = Math.floor((this.newBlock.x - XMilestones + 0.5 * blockSize) / blockSize);
-        if (J + ch < 0 || J + ch >= Ncolum)
+        let I = Math.floor((this.newBlock.y - this.YMilestones + 1 * this.blockSize) / this.blockSize);
+        let J = Math.floor((this.newBlock.x - this.XMilestones + 0.5 * this.blockSize) / this.blockSize);
+        if (J + ch < 0 || J + ch >= this.Ncolum)
             return;
         if (I >= 0 && this.data[I][J + ch] != 0)
             return;
-        this.newBlock.x += ch * blockSize;
+        this.newBlock.x += ch * this.blockSize;
     }
 
     checkProcess() {
@@ -374,9 +378,9 @@ export class Game extends Application {
                 this.ticker.stop();
             } else {
                 this.listMove = [];
-                for (let i = 0; i < Nrow; i++)
-                    for (let j = 0; j < Ncolum; j++)
-                        this.listMove.push({ start: { x: i, y: j }, end: { x: XMilestones + j * blockSize, y: -2 * blockSize } });
+                for (let i = 0; i < this.Nrow; i++)
+                    for (let j = 0; j < this.Ncolum; j++)
+                        this.listMove.push({ start: { x: i, y: j }, end: { x: this.XMilestones + j * this.blockSize, y: -2 * this.blockSize } });
                 typeLoop = 4;
             }
         }
@@ -405,6 +409,14 @@ export class Game extends Application {
         });
 
         left.setRelease(() => {
+
+        });
+
+        up.setRelease(() => {
+
+        });
+
+        right.setRelease(() => {
 
         });
 
