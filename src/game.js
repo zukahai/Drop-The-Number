@@ -1,5 +1,4 @@
 import { Application, Text, TextStyle, utils } from "pixi.js";
-import SpriteObject from "./SpriteManager/sprite-object.js";
 import ProcessBar from "./ProcessManager/ProcessBar.js";
 import TouchListener from "./ActionManager/touch.js";
 import Level from "./LevelManager/level.js";
@@ -7,10 +6,8 @@ import gameScene from "./SceneManager/gameScene.js";
 import gameOverScene from "./SceneManager/gameOverScene.js";
 import { loadData } from "./Utils/utils.js";
 import { setupController } from "./ActionManager/keyboard.js";
-import { NextLevel, newBlockDown, listBlockDown, mergeBlock, createBlock } from "./Utils/blockMove.js";
+import { NextLevel, newBlockDown, listBlockDown, mergeBlock, createBlock, createHeading } from "./Utils/blockMove.js";
 import { TouchListenerEvent } from "./ActionManager/touch.js";
-
-const TextureCache = utils.TextureCache;
 
 let Nrow = 6;
 let Ncolum = 5;
@@ -44,24 +41,11 @@ export class Game extends Application {
         this.gameOverScene = new gameOverScene(this.stage);
         this.processBar = new ProcessBar(this.Level, this.blockSize);
         this.gameScene.scene.addChild(this.processBar);
-
         this.Level.loadLevel(this);
-
-        for (let j = 0; j < this.Ncolum; j++) {
-            let t = new SpriteObject(
-                this.gameScene.scene,
-                TextureCache["head.png"],
-                j * this.blockSize + this.XMilestones,
-                this.YMilestones - this.blockSize
-            );
-            t.width = this.blockSize;
-            t.height = this.blockSize;
-        }
-
+        createHeading(this);
         loadData(this);
         this.touchListener = new TouchListener(this.view, true);
         createBlock(this, -1, 1);
-
         setupController(this);
         this.ticker.add((delta) => this.loop(delta));
     }

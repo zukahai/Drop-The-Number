@@ -175,3 +175,16 @@ export function moveBlock(game, ch) {
         return;
     game.newBlock.x += ch * game.blockSize;
 }
+
+export function createHeading(game) {
+    for (let j = 0; j < game.Ncolum; j++) {
+        let t = new SpriteObject(
+            game.gameScene.scene,
+            TextureCache["head.png"],
+            j * game.blockSize + game.XMilestones,
+            game.YMilestones - game.blockSize
+        );
+        t.width = game.blockSize;
+        t.height = game.blockSize;
+    }
+}
