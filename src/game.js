@@ -47,7 +47,7 @@ export class Game extends Application {
         this.processBar = new ProcessBar(this.Level, this.blockSize);
         this.gameScene.scene.addChild(this.processBar);
 
-        this.loadLevel(this.Level.currentLevel);
+        this.Level.loadLevel(this);
 
         for (let j = 0; j < this.Ncolum; j++) {
             let t = new SpriteObject(
@@ -80,19 +80,6 @@ export class Game extends Application {
         this.data = [];
         this.indexNewBlock = 2;
         this.typeLoop = 1;
-    }
-
-    loadLevel() {
-
-        this.processBar = new ProcessBar(this.Level, this.blockSize);
-        this.data = this.Level.getData();
-
-        this.gameScene.scene.addChild(this.processBar);
-
-        this.indexNewBlock = 2;
-        this.createBlock(this.indexNewBlock, -1, 1);
-
-        this.listDown = this.listDown = [];
     }
 
     loop(delta) {
@@ -142,7 +129,8 @@ export class Game extends Application {
         }
 
         if (checkEndLoop4) {
-            this.loadLevel(this.Level.nextLevel());
+            this.Level.nextLevel();
+            this.Level.loadLevel(this);
             this.processBar.background.level_Text.setText("Level " + this.Level.currentLevel);
             this.typeLoop = 1;
         }
@@ -151,7 +139,7 @@ export class Game extends Application {
     newBlockDown() {
         this.newBlock.y += speedDown;
         if (this.checkLost()) {
-            this.gameOverScene.end();
+            this.gameOverScene.end(this);
             this.gameOverScene.setText("You lost!");
             this.ticker.stop();
         }
@@ -293,7 +281,7 @@ export class Game extends Application {
     checkProcess() {
         if (this.processBar.score >= this.processBar.targetScore) {
             if (this.Level.currentLevel == this.Level.getNumberOfLevel()) {
-                this.gameOverScene.end();
+                this.gameOverScene.end(this);
                 this.gameOverScene.setText("You win!");
                 this.ticker.stop();
             } else {

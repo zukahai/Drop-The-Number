@@ -1,4 +1,5 @@
 import LevelLoader from "./LevelLoader";
+import ProcessBar from "../ProcessManager/ProcessBar";
 
 export default class Level {
     constructor() {
@@ -34,5 +35,17 @@ export default class Level {
     nextLevel() {
         this.currentLevel++;
         return this.currentLevel;
+    }
+
+    loadLevel(game) {
+        game.processBar = new ProcessBar(game.Level, game.blockSize);
+        game.data = game.Level.getData();
+
+        game.gameScene.scene.addChild(game.processBar);
+
+        game.indexNewBlock = 2;
+        game.createBlock(game.indexNewBlock, -1, 1);
+
+        game.listDown = game.listDown = [];
     }
 }

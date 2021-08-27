@@ -30,9 +30,9 @@ export default class gameOverScene {
     setText(Text) {
         this.message.text = Text;
     }
-}
 
-export function end(game) {
-    game.gameScene.scene.setVisible(false);
-    game.gameOverScene.scene.setVisible(true);
+    end(game) {
+        game.gameScene.scene.setVisible(false);
+        game.gameOverScene.scene.setVisible(true);
+    }
 }
