@@ -17,8 +17,6 @@ let XMilestones = 0;
 let YMilestones = 0;
 let speedBlock = 0.3;
 let speedDown = speedBlock;
-let indexNewBlock = 2;
-let typeLoop = 1;
 
 let blur = 0.8;
 
@@ -64,7 +62,7 @@ export class Game extends Application {
 
         loadData(this);
         this.touchListener = new TouchListener(this.view, true);
-        this.createBlock(indexNewBlock, -1, 1);
+        this.createBlock(this.indexNewBlock, -1, 1);
 
         this.setupController();
         this.ticker.add((delta) => this.loop(delta));
@@ -80,6 +78,8 @@ export class Game extends Application {
         this.listDown = [];
         this.block = [];
         this.data = [];
+        this.indexNewBlock = 2;
+        this.typeLoop = 1;
     }
 
     loadLevel() {
@@ -89,26 +89,26 @@ export class Game extends Application {
 
         this.gameScene.scene.addChild(this.processBar);
 
-        indexNewBlock = 2;
-        this.createBlock(indexNewBlock, -1, 1);
+        this.indexNewBlock = 2;
+        this.createBlock(this.indexNewBlock, -1, 1);
 
         this.listDown = this.listDown = [];
     }
 
     loop(delta) {
-        if (typeLoop == 1) {
+        if (this.typeLoop == 1) {
             this.newBlockDown();
-        } else if (typeLoop == 2) {
+        } else if (this.typeLoop == 2) {
             this.listBlockDown();
-        } else if (typeLoop == 3) {
+        } else if (this.typeLoop == 3) {
             this.mergeBlock();
-        } else if (typeLoop == 4) {
+        } else if (this.typeLoop == 4) {
             this.NextLevel();
         }
 
         this.checkProcess();
 
-        if (typeLoop == 1 && this.touchListener.ponit.x >= this.XMilestones && this.touchListener.ponit.x <= this.XMilestones + this.Ncolum * this.blockSize) {
+        if (this.typeLoop == 1 && this.touchListener.ponit.x >= this.XMilestones && this.touchListener.ponit.x <= this.XMilestones + this.Ncolum * this.blockSize) {
             if ((this.newBlock.x + this.blockSize / 2) - (this.touchListener.ponit.x) > this.blockSize / 2)
                 this.moveBlock(-1);
             else if ((this.newBlock.x + this.blockSize / 2) - (this.touchListener.ponit.x) < -this.blockSize / 2)
@@ -144,7 +144,7 @@ export class Game extends Application {
         if (checkEndLoop4) {
             this.loadLevel(this.Level.nextLevel());
             this.processBar.background.level_Text.setText("Level " + this.Level.currentLevel);
-            typeLoop = 1;
+            this.typeLoop = 1;
         }
     }
 
@@ -157,9 +157,9 @@ export class Game extends Application {
         }
         if (this.newBlock.y >= this.YMilestones && this.data[Math.floor((this.newBlock.y - this.YMilestones + this.blockSize) / this.blockSize)][Math.floor((this.newBlock.x - this.XMilestones + 0.5 * this.blockSize) / this.blockSize)] != 0) {
             this.data[Math.floor((this.newBlock.y - this.YMilestones + 0.5 * this.blockSize) / this.blockSize)][Math.floor((this.newBlock.x - this.XMilestones + 0.5 * this.blockSize) / this.blockSize)] = this.newBlock.value;
-            indexNewBlock = Math.floor((this.newBlock.x - this.XMilestones + 0.5 * this.blockSize) / this.blockSize);
+            this.indexNewBlock = Math.floor((this.newBlock.x - this.XMilestones + 0.5 * this.blockSize) / this.blockSize);
             this.newBlock.alpha = 0;
-            typeLoop = 2;
+            this.typeLoop = 2;
             this.listMove = listMoveBlock(this, Math.floor((this.newBlock.y - this.YMilestones + 0.5 * this.blockSize) / this.blockSize), Math.floor((this.newBlock.x - this.XMilestones + 0.5 * this.blockSize) / this.blockSize));
         }
     }
@@ -210,7 +210,7 @@ export class Game extends Application {
                     }
             }
 
-            typeLoop = 3;
+            this.typeLoop = 3;
         }
     }
 
@@ -237,9 +237,9 @@ export class Game extends Application {
             for (let i = 0; i < listDown2.length; i++)
                 this.listMove = this.listMove.concat(listMoveBlock(this, listDown2[i].x, listDown2[i].y));
             if (this.listMove.length == 0) {
-                this.createBlock(indexNewBlock, -1, -1);
-                typeLoop = 1;
-            } else typeLoop = 2;
+                this.createBlock(this.indexNewBlock, -1, -1);
+                this.typeLoop = 1;
+            } else this.typeLoop = 2;
         }
     }
 
@@ -279,10 +279,6 @@ export class Game extends Application {
         this.newBlock.value = value;
     }
 
-    // end() {
-    //     this.gameScene.scene.setVisible(false);
-    //     this.gameOverScene.scene.setVisible(true);
-    // }
 
     moveBlock(ch) {
         let I = Math.floor((this.newBlock.y - this.YMilestones + 1 * this.blockSize) / this.blockSize);
@@ -305,7 +301,7 @@ export class Game extends Application {
                 for (let i = 0; i < this.Nrow; i++)
                     for (let j = 0; j < this.Ncolum; j++)
                         this.listMove.push({ start: { x: i, y: j }, end: { x: this.XMilestones + j * this.blockSize, y: -2 * this.blockSize } });
-                typeLoop = 4;
+                this.typeLoop = 4;
             }
         }
     }
