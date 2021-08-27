@@ -1,4 +1,4 @@
-import SpriteObject from "../src/SpriteManager/sprite-object.js";
+import SpriteObject from "../SpriteManager/sprite-object.js";
 import { utils } from "pixi.js";
 
 const TextureCache = utils.TextureCache;
