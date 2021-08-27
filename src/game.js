@@ -1,13 +1,12 @@
 import { Application } from "pixi.js";
 import ProcessBar from "./ProcessManager/ProcessBar.js";
-import TouchListener from "./ActionManager/touch.js";
+import TouchListener, { TouchListenerEvent } from "./ActionManager/touch.js";
 import Level from "./LevelManager/level.js";
 import gameScene from "./SceneManager/gameScene.js";
 import gameOverScene from "./SceneManager/gameOverScene.js";
 import { loadData } from "./Utils/utils.js";
 import { setupController } from "./ActionManager/keyboard.js";
 import { NextLevel, newBlockDown, listBlockDown, mergeBlock, createBlock } from "./Utils/blockMove.js";
-import { TouchListenerEvent } from "./ActionManager/touch.js";
 import { createHeading } from "./ProcessManager/backgroundProcess.js";
 
 let Nrow = 6;
