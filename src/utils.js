@@ -1,3 +1,3 @@
-export function sayHi(a) {
-    a--;
+export function sayHi(hai) {
+    hai.a--;
 }

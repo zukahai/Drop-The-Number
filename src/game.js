@@ -11,7 +11,6 @@ import { sayHi } from "./utils.js";
 
 const TextureCache = utils.TextureCache;
 
-let block = [];
 let Nrow = 6;
 let Ncolum = 5;
 let blockSize = 80;
@@ -21,11 +20,8 @@ let speedBlock = 0.3;
 let speedDown = speedBlock;
 let indexNewBlock = 2;
 let typeLoop = 1;
-let listMove = [];
-let listDown = [];
-let blur = 0.8;
 
-let data = []
+let blur = 0.8;
 
 export class Game extends Application {
     constructor() {
@@ -47,9 +43,8 @@ export class Game extends Application {
     }
 
     setup() {
-        // let a = 10;
-        // sayHi(a);
-        // console.log(a);
+        this.init();
+        console.log(this.listMove);
         this.Level = new Level();
         this.gameScene = new gameScene(this.stage)
         this.gameOverScene = new gameOverScene(this.stage);
@@ -69,7 +64,7 @@ export class Game extends Application {
             t.height = blockSize;
         }
 
-        this.loadData();
+        this.loaddata();
         this.touchListener = new TouchListener(this.view, true);
         this.createBlock(indexNewBlock, -1, 1);
 
@@ -77,17 +72,24 @@ export class Game extends Application {
         this.ticker.add((delta) => this.loop(delta));
     }
 
+    init() {
+        this.listMove = [];
+        this.listDown = [];
+        this.block = [];
+        this.data = [];
+    }
+
     loadLevel(lv) {
 
         this.processBar = new ProcessBar(this.Level, blockSize);
-        data = this.Level.getData(lv)
+        this.data = this.Level.getData();
 
         this.gameScene.scene.addChild(this.processBar);
 
         indexNewBlock = 2;
         this.createBlock(indexNewBlock, -1, 1);
 
-        listDown = listDown = [];
+        this.listDown = this.listDown = [];
     }
 
     loop(delta) {
@@ -115,19 +117,21 @@ export class Game extends Application {
     NextLevel() {
         let checkEndLoop4 = false;
 
-        if (listMove.length == 0)
+        if (this.listMove == undefined)
+            this.listMove = [];
+        if (this.listMove.length == 0)
             checkEndLoop4 = true;
 
-        for (let i = 0; i < listMove.length; i++) {
-            let x = listMove[i].end.x;
-            let y = listMove[i].end.y;
-            if (Math.abs(block[listMove[i].start.x][listMove[i].start.y].x - listMove[i].end.x) > blockSize / 5 || Math.abs(block[listMove[i].start.x][listMove[i].start.y].y - listMove[i].end.y) > blockSize / 5) {
+        for (let i = 0; i < this.listMove.length; i++) {
+            let x = this.listMove[i].end.x;
+            let y = this.listMove[i].end.y;
+            if (Math.abs(this.block[this.listMove[i].start.x][this.listMove[i].start.y].x - this.listMove[i].end.x) > this.blockSize / 5 || Math.abs(this.block[this.listMove[i].start.x][this.listMove[i].start.y].y - this.listMove[i].end.y) > blockSize / 5) {
                 for (let k = 0; k < 5; k++) {
-                    x = (block[listMove[i].start.x][listMove[i].start.y].x + x) / 2;
-                    y = (block[listMove[i].start.x][listMove[i].start.y].y + y) / 2;
+                    x = (this.block[this.listMove[i].start.x][this.listMove[i].start.y].x + x) / 2;
+                    y = (this.block[this.listMove[i].start.x][this.listMove[i].start.y].y + y) / 2;
                 }
-                block[listMove[i].start.x][listMove[i].start.y].x = x;
-                block[listMove[i].start.x][listMove[i].start.y].y = y;
+                this.block[this.listMove[i].start.x][this.listMove[i].start.y].x = x;
+                this.block[this.listMove[i].start.x][this.listMove[i].start.y].y = y;
             } else {
                 checkEndLoop4 = true;
                 break;
@@ -148,24 +152,26 @@ export class Game extends Application {
             this.gameOverScene.setText("You lost!");
             this.ticker.stop();
         }
-        if (this.newBlock.y >= YMilestones && data[Math.floor((this.newBlock.y - YMilestones + blockSize) / blockSize)][Math.floor((this.newBlock.x - XMilestones + 0.5 * blockSize) / blockSize)] != 0) {
-            data[Math.floor((this.newBlock.y - YMilestones + 0.5 * blockSize) / blockSize)][Math.floor((this.newBlock.x - XMilestones + 0.5 * blockSize) / blockSize)] = this.newBlock.value;
+        if (this.newBlock.y >= YMilestones && this.data[Math.floor((this.newBlock.y - YMilestones + blockSize) / blockSize)][Math.floor((this.newBlock.x - XMilestones + 0.5 * blockSize) / blockSize)] != 0) {
+            this.data[Math.floor((this.newBlock.y - YMilestones + 0.5 * blockSize) / blockSize)][Math.floor((this.newBlock.x - XMilestones + 0.5 * blockSize) / blockSize)] = this.newBlock.value;
             indexNewBlock = Math.floor((this.newBlock.x - XMilestones + 0.5 * blockSize) / blockSize);
             this.newBlock.alpha = 0;
             typeLoop = 2;
-            listMove = this.listMoveBlock(Math.floor((this.newBlock.y - YMilestones + 0.5 * blockSize) / blockSize), Math.floor((this.newBlock.x - XMilestones + 0.5 * blockSize) / blockSize));
+            this.listMove = this.listMoveBlock(Math.floor((this.newBlock.y - YMilestones + 0.5 * blockSize) / blockSize), Math.floor((this.newBlock.x - XMilestones + 0.5 * blockSize) / blockSize));
         }
     }
 
     listBlockDown() {
         let checkEndLoop2 = false;
-        if (listMove.length == 0)
+        if (this.listMove == undefined)
+            this.listMove = [];
+        if (this.listMove.length == 0)
             checkEndLoop2 = true;
 
-        for (let i = 0; i < listMove.length; i++) {
-            if (Math.abs(block[listMove[i].start.x][listMove[i].start.y].x - listMove[i].end.x) > 0.01 || Math.abs(block[listMove[i].start.x][listMove[i].start.y].y - listMove[i].end.y) > 0.01) {
-                block[listMove[i].start.x][listMove[i].start.y].x = (block[listMove[i].start.x][listMove[i].start.y].x + listMove[i].end.x) / 2;
-                block[listMove[i].start.x][listMove[i].start.y].y = (block[listMove[i].start.x][listMove[i].start.y].y + listMove[i].end.y) / 2;
+        for (let i = 0; i < this.listMove.length; i++) {
+            if (Math.abs(this.block[this.listMove[i].start.x][this.listMove[i].start.y].x - this.listMove[i].end.x) > 0.01 || Math.abs(this.block[this.listMove[i].start.x][this.listMove[i].start.y].y - this.listMove[i].end.y) > 0.01) {
+                this.block[this.listMove[i].start.x][this.listMove[i].start.y].x = (this.block[this.listMove[i].start.x][this.listMove[i].start.y].x + this.listMove[i].end.x) / 2;
+                this.block[this.listMove[i].start.x][this.listMove[i].start.y].y = (this.block[this.listMove[i].start.x][this.listMove[i].start.y].y + this.listMove[i].end.y) / 2;
             } else {
                 checkEndLoop2 = true;
                 break;
@@ -173,27 +179,27 @@ export class Game extends Application {
         }
 
         if (checkEndLoop2) {
-            this.loadData();
+            this.loaddata();
             for (let j = 0; j < Ncolum; j++) {
                 let i = Nrow - 1;
                 for (i = Nrow - 1; i >= 1; i--)
-                    if (data[i][j] == 0) {
+                    if (this.data[i][j] == 0) {
                         let check = false;
                         for (let k = i - 1; k >= 0; k--)
-                            if (data[k][j] != 0) {
+                            if (this.data[k][j] != 0) {
                                 check = true;
                                 break;
                             }
                         let count = 0;
                         if (check) {
                             for (let k = i - 1; k >= 0; k--)
-                                if (data[k][j] != 0) {
-                                    listDown.push({ x: i - count, y: j });
-                                    listMove.push({ start: { x: k, y: j }, end: { x: block[i - count][j].x, y: block[i - count][j].y } });
-                                    data[i - count][j] = data[k][j];
-                                    data[k][j] = 0;
+                                if (this.data[k][j] != 0) {
+                                    this.listDown.push({ x: i - count, y: j });
+                                    this.listMove.push({ start: { x: k, y: j }, end: { x: this.block[i - count][j].x, y: this.block[i - count][j].y } });
+                                    this.data[i - count][j] = this.data[k][j];
+                                    this.data[k][j] = 0;
                                     if (k == 0)
-                                        data[0][j] = 0;
+                                        this.data[0][j] = 0;
                                     count++;
                                 }
                             break;
@@ -207,13 +213,13 @@ export class Game extends Application {
 
     mergeBlock() {
         let checkEndLoop3 = false;
-        if (listMove.length == 0)
+        if (this.listMove.length == 0)
             checkEndLoop3 = true;
 
-        for (let i = 0; i < listMove.length; i++) {
-            if (Math.abs(block[listMove[i].start.x][listMove[i].start.y].x - listMove[i].end.x) > 0.01 || Math.abs(block[listMove[i].start.x][listMove[i].start.y].y - listMove[i].end.y) > 0.01) {
-                block[listMove[i].start.x][listMove[i].start.y].x = (block[listMove[i].start.x][listMove[i].start.y].x + listMove[i].end.x) / 2;
-                block[listMove[i].start.x][listMove[i].start.y].y = (block[listMove[i].start.x][listMove[i].start.y].y + listMove[i].end.y) / 2;
+        for (let i = 0; i < this.listMove.length; i++) {
+            if (Math.abs(this.block[this.listMove[i].start.x][this.listMove[i].start.y].x - this.listMove[i].end.x) > 0.01 || Math.abs(this.block[this.listMove[i].start.x][this.listMove[i].start.y].y - this.listMove[i].end.y) > 0.01) {
+                this.block[this.listMove[i].start.x][this.listMove[i].start.y].x = (this.block[this.listMove[i].start.x][this.listMove[i].start.y].x + this.listMove[i].end.x) / 2;
+                this.block[this.listMove[i].start.x][this.listMove[i].start.y].y = (this.block[this.listMove[i].start.x][this.listMove[i].start.y].y + this.listMove[i].end.y) / 2;
             } else {
                 checkEndLoop3 = true;
                 break;
@@ -221,13 +227,13 @@ export class Game extends Application {
         }
 
         if (checkEndLoop3) {
-            this.loadData();
-            listMove = [];
-            let listDown2 = listDown;
-            listDown = [];
+            this.loaddata();
+            this.listMove = [];
+            let listDown2 = this.listDown;
+            this.listDown = [];
             for (let i = 0; i < listDown2.length; i++)
-                listMove = listMove.concat(this.listMoveBlock(listDown2[i].x, listDown2[i].y));
-            if (listMove.length == 0) {
+                this.listMove = this.listMove.concat(this.listMoveBlock(listDown2[i].x, listDown2[i].y));
+            if (this.listMove.length == 0) {
                 this.createBlock(indexNewBlock, -1, -1);
                 typeLoop = 1;
             } else typeLoop = 2;
@@ -239,54 +245,54 @@ export class Game extends Application {
         let I = x;
         let J = y;
 
-        let temp = data[I][J];
-        if (I >= 0 && I < Nrow - 1 && data[I][J] == data[I + 1][J]) {
-            listMove2.push({ start: { x: I + 1, y: J }, end: { x: block[I][J].x, y: block[I][J].y } });
+        let temp = this.data[I][J];
+        if (I >= 0 && I < Nrow - 1 && this.data[I][J] == this.data[I + 1][J]) {
+            listMove2.push({ start: { x: I + 1, y: J }, end: { x: this.block[I][J].x, y: this.block[I][J].y } });
             temp *= 2;
-            data[I + 1][J] = 0;
-            block[I + 1][J].alpha = blur;
+            this.data[I + 1][J] = 0;
+            this.block[I + 1][J].alpha = blur;
         }
 
-        if (I >= 1 && I < Nrow - 1 && data[I][J] == data[I - 1][J]) {
-            listMove2.push({ start: { x: I - 1, y: J }, end: { x: block[I][J].x, y: block[I][J].y } });
+        if (I >= 1 && I < Nrow - 1 && this.data[I][J] == this.data[I - 1][J]) {
+            listMove2.push({ start: { x: I - 1, y: J }, end: { x: this.block[I][J].x, y: this.block[I][J].y } });
             temp *= 2;
-            data[I - 1][J] = 0;
-            block[I - 1][J].alpha = blur;
+            this.data[I - 1][J] = 0;
+            this.block[I - 1][J].alpha = blur;
         }
 
-        if (I >= 0 && J >= 1 && data[I][J] == data[I][J - 1]) {
-            listMove2.push({ start: { x: I, y: J - 1 }, end: { x: block[I][J].x, y: block[I][J].y } });
+        if (I >= 0 && J >= 1 && this.data[I][J] == this.data[I][J - 1]) {
+            listMove2.push({ start: { x: I, y: J - 1 }, end: { x: this.block[I][J].x, y: this.block[I][J].y } });
             temp *= 2;
-            data[I][J - 1] = 0;
-            block[I][J - 1].alpha = blur;
+            this.data[I][J - 1] = 0;
+            this.block[I][J - 1].alpha = blur;
         }
 
-        if (I >= 0 && J < Ncolum && data[I][J] == data[I][J + 1]) {
-            listMove2.push({ start: { x: I, y: J + 1 }, end: { x: block[I][J].x, y: block[I][J].y } });
+        if (I >= 0 && J < Ncolum && this.data[I][J] == this.data[I][J + 1]) {
+            listMove2.push({ start: { x: I, y: J + 1 }, end: { x: this.block[I][J].x, y: this.block[I][J].y } });
             temp *= 2;
-            data[I][J + 1] = 0;
-            block[I][J + 1].alpha = blur;
+            this.data[I][J + 1] = 0;
+            this.block[I][J + 1].alpha = blur;
         }
 
-        if (data[I][J] != temp && data[I + 1][J] != 0) {
+        if (this.data[I][J] != temp && this.data[I + 1][J] != 0) {
             let check = true;
-            for (let i = 0; i < listDown.length; i++)
-                if (listDown[i] != { x: I, y: J })
+            for (let i = 0; i < this.listDown.length; i++)
+                if (this.listDown[i] != { x: I, y: J })
                     check = false;
             if (check)
-                listDown.push({ x: I, y: J });
+                this.listDown.push({ x: I, y: J });
         }
 
         if (this.processBar.score < this.processBar.targetScore)
-            this.processBar.update((temp == data[I][J]) ? 0 : temp);
+            this.processBar.update((temp == this.data[I][J]) ? 0 : temp);
 
-        data[I][J] = temp;
+        this.data[I][J] = temp;
         return listMove2;
     }
 
     checkLost() {
         for (let j = 0; j < Ncolum; j++)
-            if (data[0][j] != 0)
+            if (this.data[0][j] != 0)
                 return true;
         return false;
     }
@@ -298,15 +304,15 @@ export class Game extends Application {
         let k = 3;
         for (let i = 0; i < Nrow; i++)
             for (let j = 0; j < Ncolum; j++)
-                if (k < Math.floor(Math.log2(data[i][j])))
-                    k = Math.floor(Math.log2(data[i][j]));
+                if (k < Math.floor(Math.log2(this.data[i][j])))
+                    k = Math.floor(Math.log2(this.data[i][j]));
         if (k > 6)
             k = Math.floor((k + 1) / 2);
         else k = 3;
         if (VALUE > 0)
             k = VALUE;
         let value = Math.pow(2, Math.floor(Math.random() * 999) % k + 1);
-        this.loadData();
+        this.loaddata();
         if (this.newBlock != undefined)
             this.newBlock.alpha = 0;
         this.newBlock = new SpriteObject(
@@ -320,24 +326,24 @@ export class Game extends Application {
         this.newBlock.value = value;
     }
 
-    loadData() {
-        if (block.length > 0)
+    loaddata() {
+        if (this.block.length > 0)
             for (let i = 0; i < Nrow; i++)
                 for (let j = 0; j < Ncolum; j++)
-                    block[i][j].alpha = 0;
+                    this.block[i][j].alpha = 0;
         for (let i = 0; i < Nrow; i++) {
             let temp = [];
             for (let j = 0; j < Ncolum; j++) {
                 temp[j] = new SpriteObject(
                     this.gameScene.scene,
-                    TextureCache[data[i][j] + ".png"],
+                    TextureCache[this.data[i][j] + ".png"],
                     j * blockSize + XMilestones,
                     i * blockSize + YMilestones
                 );
                 temp[j].width = blockSize;
                 temp[j].height = blockSize;
             }
-            block[i] = temp;
+            this.block[i] = temp;
         }
     }
 
@@ -346,12 +352,16 @@ export class Game extends Application {
         this.gameOverScene.scene.setVisible(true);
     }
 
+    distance(x, y) {
+        return Math.sqrt(x * x + y * y);
+    }
+
     moveBlock(ch) {
         let I = Math.floor((this.newBlock.y - YMilestones + 1 * blockSize) / blockSize);
         let J = Math.floor((this.newBlock.x - XMilestones + 0.5 * blockSize) / blockSize);
         if (J + ch < 0 || J + ch >= Ncolum)
             return;
-        if (I >= 0 && data[I][J + ch] != 0)
+        if (I >= 0 && this.data[I][J + ch] != 0)
             return;
         this.newBlock.x += ch * blockSize;
     }
@@ -363,10 +373,10 @@ export class Game extends Application {
                 this.gameOverScene.setText("You win!");
                 this.ticker.stop();
             } else {
-                listMove = [];
+                this.listMove = [];
                 for (let i = 0; i < Nrow; i++)
                     for (let j = 0; j < Ncolum; j++)
-                        listMove.push({ start: { x: i, y: j }, end: { x: XMilestones + j * blockSize, y: -2 * blockSize } });
+                        this.listMove.push({ start: { x: i, y: j }, end: { x: XMilestones + j * blockSize, y: -2 * blockSize } });
                 typeLoop = 4;
             }
         }
@@ -382,6 +392,10 @@ export class Game extends Application {
             this.moveBlock(-1);
         });
 
+        up.setPress(() => {
+
+        });
+
         right.setPress(() => {
             this.moveBlock(1);
         });
@@ -390,8 +404,13 @@ export class Game extends Application {
             speedDown = 30 * speedBlock;
         });
 
+        left.setRelease(() => {
+
+        });
+
         down.setRelease(() => {
             speedDown = speedBlock;
         });
+
     }
 }

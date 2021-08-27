@@ -33,7 +33,7 @@ export default class Keyboard {
 
     upListener(event) {
         if (event.key === this.value) {
-            // this.release();
+            this.release();
             this.isDown = false;
             this.isUp = true;
             event.preventDefault();
