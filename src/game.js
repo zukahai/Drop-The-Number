@@ -6,8 +6,9 @@ import gameScene from "./SceneManager/gameScene.js";
 import gameOverScene from "./SceneManager/gameOverScene.js";
 import { loadData } from "./Utils/utils.js";
 import { setupController } from "./ActionManager/keyboard.js";
-import { NextLevel, newBlockDown, listBlockDown, mergeBlock, createBlock, createHeading } from "./Utils/blockMove.js";
+import { NextLevel, newBlockDown, listBlockDown, mergeBlock, createBlock } from "./Utils/blockMove.js";
 import { TouchListenerEvent } from "./ActionManager/touch.js";
+import { createHeading } from "./ProcessManager/backgroundProcess.js";
 
 let Nrow = 6;
 let Ncolum = 5;

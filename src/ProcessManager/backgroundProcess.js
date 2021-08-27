@@ -1,6 +1,7 @@
 import { Container, Graphics } from 'pixi.js';
+import SpriteObject from '../SpriteManager/sprite-object.js';
 import TextLevel from "./TextLevel.js";
-
+import { TextureCache } from '@pixi/utils';
 
 export default class backgroundProcess extends Container {
     constructor(blockSize) {
@@ -14,5 +15,18 @@ export default class backgroundProcess extends Container {
         this.addChild(this.background);
         this.level_Text = new TextLevel(this.blockSize);
         this.addChild(this.level_Text);
+    }
+}
+
+export function createHeading(game) {
+    for (let j = 0; j < game.Ncolum; j++) {
+        let t = new SpriteObject(
+            game.gameScene.scene,
+            TextureCache["head.png"],
+            j * game.blockSize + game.XMilestones,
+            game.YMilestones - game.blockSize
+        );
+        t.width = game.blockSize;
+        t.height = game.blockSize;
     }
 }
