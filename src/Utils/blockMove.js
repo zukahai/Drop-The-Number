@@ -1,6 +1,7 @@
 import { listMoveBlock, loadData } from "./utils";
 import SpriteObject from "../SpriteManager/sprite-object";
 import { TextureCache } from "@pixi/utils";
+import { checkLost } from "./utils";
 
 export function NextLevel(game) {
     let checkEndLoop4 = false;
@@ -127,13 +128,6 @@ export function mergeBlock(game) {
             game.typeLoop = 1;
         } else game.typeLoop = 2;
     }
-}
-
-export function checkLost(game) {
-    for (let j = 0; j < game.Ncolum; j++)
-        if (game.data[0][j] != 0)
-            return true;
-    return false;
 }
 
 export function createBlock(game, y, VALUE) {

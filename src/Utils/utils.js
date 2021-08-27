@@ -73,3 +73,10 @@ export function listMoveBlock(game, x, y) {
     game.data[I][J] = temp;
     return listMove;
 }
+
+export function checkLost(game) {
+    for (let j = 0; j < game.Ncolum; j++)
+        if (game.data[0][j] != 0)
+            return true;
+    return false;
+}
