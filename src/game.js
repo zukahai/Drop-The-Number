@@ -7,6 +7,7 @@ import Level from "./LevelManager/level.js";
 import gameScene from "./SceneManager/gameScene.js";
 import gameOverScene from "./SceneManager/gameOverScene.js";
 import listSprite from "./SpriteManager/listSprite.js";
+import { sayHi } from "./utils.js";
 
 const TextureCache = utils.TextureCache;
 
@@ -46,6 +47,9 @@ export class Game extends Application {
     }
 
     setup() {
+        // let a = 10;
+        // sayHi(a);
+        // console.log(a);
         this.Level = new Level();
         this.gameScene = new gameScene(this.stage)
         this.gameOverScene = new gameOverScene(this.stage);
@@ -194,7 +198,6 @@ export class Game extends Application {
                                 }
                             break;
                         }
-
                     }
             }
 
@@ -343,10 +346,6 @@ export class Game extends Application {
         this.gameOverScene.scene.setVisible(true);
     }
 
-    distance(x, y) {
-        return Math.sqrt(x * x + y * y);
-    }
-
     moveBlock(ch) {
         let I = Math.floor((this.newBlock.y - YMilestones + 1 * blockSize) / blockSize);
         let J = Math.floor((this.newBlock.x - XMilestones + 0.5 * blockSize) / blockSize);
@@ -383,28 +382,12 @@ export class Game extends Application {
             this.moveBlock(-1);
         });
 
-        up.setPress(() => {
-
-        });
-
         right.setPress(() => {
             this.moveBlock(1);
         });
 
         down.setPress(() => {
             speedDown = 30 * speedBlock;
-        });
-
-        left.setRelease(() => {
-
-        });
-
-        up.setRelease(() => {
-
-        });
-
-        right.setRelease(() => {
-
         });
 
         down.setRelease(() => {

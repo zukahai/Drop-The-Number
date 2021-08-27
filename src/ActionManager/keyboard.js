@@ -44,5 +44,4 @@ export default class Keyboard {
         window.removeEventListener("keydown", this.downListener);
         window.removeEventListener("keyup", this.upListener);
     }
-
 }
