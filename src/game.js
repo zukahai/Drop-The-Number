@@ -104,14 +104,4 @@ export class Game extends Application {
             this.speedDown = this.touchListener.ponit.z * this.speedBlock;
         }
     }
-
-    moveBlock(ch) {
-        let I = Math.floor((this.newBlock.y - this.YMilestones + 1 * this.blockSize) / this.blockSize);
-        let J = Math.floor((this.newBlock.x - this.XMilestones + 0.5 * this.blockSize) / this.blockSize);
-        if (J + ch < 0 || J + ch >= this.Ncolum)
-            return;
-        if (I >= 0 && this.data[I][J + ch] != 0)
-            return;
-        this.newBlock.x += ch * this.blockSize;
-    }
 }
