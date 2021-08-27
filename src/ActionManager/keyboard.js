@@ -1,3 +1,5 @@
+import { moveBlock } from "../Utils/blockMove";
+
 export default class Keyboard {
     constructor(value) {
         this.value = value;
@@ -53,7 +55,7 @@ export function setupController(game) {
         down = new Keyboard("ArrowDown");
 
     left.setPress(() => {
-        game.moveBlock(-1);
+        moveBlock(game, -1);
     });
 
     up.setPress(() => {
@@ -61,7 +63,7 @@ export function setupController(game) {
     });
 
     right.setPress(() => {
-        game.moveBlock(1);
+        moveBlock(game, 1);
     });
 
     down.setPress(() => {

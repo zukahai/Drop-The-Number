@@ -165,3 +165,13 @@ export function createBlock(game, y, VALUE) {
     game.newBlock.height = game.blockSize;
     game.newBlock.value = value;
 }
+
+export function moveBlock(game, ch) {
+    let I = Math.floor((game.newBlock.y - game.YMilestones + 1 * game.blockSize) / game.blockSize);
+    let J = Math.floor((game.newBlock.x - game.XMilestones + 0.5 * game.blockSize) / game.blockSize);
+    if (J + ch < 0 || J + ch >= game.Ncolum)
+        return;
+    if (I >= 0 && game.data[I][J + ch] != 0)
+        return;
+    game.newBlock.x += ch * game.blockSize;
+}
