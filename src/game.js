@@ -49,7 +49,7 @@ export class Game extends Application {
         this.typeLoop = 1;
         this.speedBlock = 0.3;
         this.speedDown = this.speedBlock;
-        this.blur = 0.75;
+        this.blur = 0.9;
     }
 
     setup() {
